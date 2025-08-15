@@ -105,19 +105,19 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-cycle-dark">
-              {mode === "login" ? "Sign In" : "Join CycleConnect"}
+            <h2 className="text-2xl font-bold text-charcoal">
+              {mode === "login" ? "Sign In" : "Join GroupRideApp"}
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="w-8 h-8 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-white/30 transition-all duration-200"
               data-testid="button-close-auth-modal"
             >
-              <i className="fas fa-times text-xl"></i>
+              <i className="fas fa-times text-sm"></i>
             </button>
           </div>
 
@@ -155,7 +155,7 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
 
               <Button
                 type="submit"
-                className="w-full bg-cycle-green hover:bg-cycle-green/90"
+                className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white rounded-xl shadow-lg backdrop-blur-sm"
                 disabled={loginMutation.isPending}
                 data-testid="button-submit-login"
               >
@@ -316,7 +316,7 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
 
               <Button
                 type="submit"
-                className="w-full bg-cycle-green hover:bg-cycle-green/90"
+                className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white rounded-xl shadow-lg backdrop-blur-sm"
                 disabled={registerMutation.isPending}
                 data-testid="button-submit-register"
               >
@@ -332,13 +332,13 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
             </form>
           )}
 
-          <div className="mt-6 text-center">
-            <p className="text-cycle-gray">
+          <div className="mt-6 text-center p-4 bg-white/30 backdrop-blur-sm rounded-xl border border-white/20">
+            <p className="text-warm-gray">
               {mode === "login" ? "Don't have an account?" : "Already have an account?"}
               {" "}
               <button
                 onClick={() => onModeChange(mode === "login" ? "register" : "login")}
-                className="text-cycle-green hover:underline"
+                className="text-cyan-600 hover:text-cyan-700 font-medium hover:underline"
                 data-testid="button-switch-auth-mode"
               >
                 {mode === "login" ? "Sign up" : "Sign in"}
