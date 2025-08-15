@@ -21,8 +21,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Session middleware with PostgreSQL storage
   // Detect if running on Replit
   const isReplit = process.env.REPLIT_DOMAINS || process.env.REPL_ID;
+  
+  // For Replit, we need secure: true with sameSite: 'none' for cross-origin cookies to work
   const cookieSettings = isReplit ? {
-    secure: false, // Replit uses HTTPS but internal communication is HTTP
+    secure: true, // Required for sameSite: 'none' 
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
     sameSite: 'none' as const, // Required for cross-origin on Replit
@@ -131,12 +133,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("Session saved successfully for user:", user.username);
         console.log("Session ID after login:", req.sessionID);
         console.log("Session cookie will be set with name: cycle.sid");
-        console.log("Cookie settings:", {
-          secure: false,
-          httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000,
-          sameSite: 'lax'
-        });
+        console.log("Cookie settings:", cookieSettings);
+        console.log("Setting response headers for cookie...");
+        
+        // Set response headers to help debug cookie setting
+        res.setHeader('Set-Cookie-Debug', `cycle.sid=${req.sessionID}; Max-Age=86400; HttpOnly; ${cookieSettings.secure ? 'Secure; ' : ''}SameSite=${cookieSettings.sameSite}`);
         console.log("=== END LOGIN SUCCESS ===");
         res.json(user);
       });

@@ -14,8 +14,9 @@ app.use((req, res, next) => {
   
   // Configure origin based on environment
   if (isReplit) {
-    // On Replit, allow the current request origin
-    res.header('Access-Control-Allow-Origin', origin || req.headers.host);
+    // On Replit, be more explicit about allowed origins
+    const replitDomain = `https://${process.env.REPLIT_DOMAINS}`;
+    res.header('Access-Control-Allow-Origin', origin || replitDomain);
   } else {
     // Local development
     res.header('Access-Control-Allow-Origin', origin || 'http://localhost:5000');

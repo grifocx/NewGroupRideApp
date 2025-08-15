@@ -67,13 +67,20 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
       console.log("Response:", response);
       console.log("Document cookies after login:", document.cookie);
       
+      // Wait a moment to let cookies settle, then check auth
+      setTimeout(() => {
+        console.log("=== CLIENT: Checking cookies after delay ===");
+        console.log("Document cookies (delayed):", document.cookie);
+        
+        // Force invalidate and refetch the auth query
+        queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+        queryClient.refetchQueries({ queryKey: ["/api/auth/user"] });
+      }, 100);
+      
       toast({
         title: "Welcome back!",
         description: "You've been successfully logged in.",
       });
-      
-      console.log("=== CLIENT: Invalidating queries ===");
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       
       console.log("=== CLIENT: Closing modal ===");
       onClose();
