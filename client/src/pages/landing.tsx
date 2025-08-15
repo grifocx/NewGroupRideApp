@@ -6,34 +6,90 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
-  const { login, register } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  // Redirect if already authenticated
+  if (user) {
+    setLocation("/");
+    return null;
+  }
+
+  const loginMutation = useMutation({
+    mutationFn: async ({ username, password }: { username: string; password: string }) => {
+      const response = await apiRequest("/api/auth/login", "POST", {
+        username,
+        password,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      // Invalidate auth query to refresh user data
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      toast({
+        title: "Welcome back!",
+        description: "You've successfully logged in.",
+      });
+      setLocation("/");
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Login failed",
+        description: error.message || "Invalid credentials",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: async (userData: {
+      username: string;
+      password: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      experienceLevel: string;
+      bikeType: string;
+      location: string;
+    }) => {
+      const response = await apiRequest("/api/auth/register", "POST", userData);
+      return response.json();
+    },
+    onSuccess: () => {
+      // Invalidate auth query to refresh user data
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      toast({
+        title: "Account created!",
+        description: "Welcome to GroupRideApp.",
+      });
+      setLocation("/");
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Registration failed",
+        description: error.message || "Unable to create account",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
-
-    try {
-      await login(username, password);
-      setLocation("/");
-    } catch (error) {
-      console.error("Login failed:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    
+    loginMutation.mutate({ username, password });
   };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    
     const formData = new FormData(e.currentTarget);
     const userData = {
       username: formData.get("username") as string,
@@ -46,14 +102,7 @@ export default function Landing() {
       location: "San Francisco, CA"
     };
 
-    try {
-      await register(userData);
-      setLocation("/");
-    } catch (error) {
-      console.error("Registration failed:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    registerMutation.mutate(userData);
   };
 
   return (
@@ -135,11 +184,11 @@ export default function Landing() {
                   </div>
                   <Button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={loginMutation.isPending}
                     className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-medium py-2.5 rounded-xl shadow-lg backdrop-blur-sm transition-all duration-200 transform hover:scale-105"
                     data-testid="button-login-submit"
                   >
-                    {isLoading ? "Signing In..." : "Sign In"}
+                    {loginMutation.isPending ? "Signing In..." : "Sign In"}
                   </Button>
                 </form>
               </TabsContent>
@@ -208,11 +257,11 @@ export default function Landing() {
                   </div>
                   <Button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={registerMutation.isPending}
                     className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-medium py-2.5 rounded-xl shadow-lg backdrop-blur-sm transition-all duration-200 transform hover:scale-105"
                     data-testid="button-register-submit"
                   >
-                    {isLoading ? "Creating Account..." : "Create Account"}
+                    {registerMutation.isPending ? "Creating Account..." : "Create Account"}
                   </Button>
                 </form>
               </TabsContent>
