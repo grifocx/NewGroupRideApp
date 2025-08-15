@@ -254,7 +254,7 @@ export default function ProfileModal({ onClose }: ProfileModalProps) {
             <div className="text-sm text-cycle-gray">
               <p><strong>Username:</strong> {user.username}</p>
               <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>Member since:</strong> {new Date(user.joinedAt).toLocaleDateString()}</p>
+              <p><strong>Member since:</strong> {user.joinedAt ? new Date(user.joinedAt).toLocaleDateString() : 'Unknown'}</p>
             </div>
           </div>
         </div>
