@@ -41,13 +41,15 @@
   --font-mono: Menlo, monospace;
   --radius: 1.3rem;
   
-  /* Cycling theme colors */
-  --cycle-green: hsl(142 76% 36%);
-  --cycle-blue: hsl(199 89% 48%);
-  --cycle-orange: hsl(24 95% 53%);
-  --cycle-dark: hsl(222 84% 5%);
-  --cycle-gray: hsl(215 28% 29%);
-  --cycle-light: hsl(210 20% 98%);
+  /* TRD-inspired color scheme */
+  --sage-green: hsl(84 20% 55%);
+  --warm-beige: hsl(40 35% 75%);
+  --trd-yellow: hsl(50 95% 60%);
+  --trd-orange: hsl(25 95% 65%);
+  --trd-red: hsl(0 85% 60%);
+  --charcoal: hsl(0 0% 25%);
+  --warm-gray: hsl(30 10% 50%);
+  --cream-light: hsl(45 25% 95%);
 }
 
 .dark {
@@ -101,70 +103,88 @@
 }
 
 @layer utilities {
-  .text-cycle-green {
-    color: var(--cycle-green);
+  .text-sage {
+    color: var(--sage-green);
   }
-  .text-cycle-blue {
-    color: var(--cycle-blue);
+  .text-beige {
+    color: var(--warm-beige);
   }
-  .text-cycle-orange {
-    color: var(--cycle-orange);
+  .text-yellow {
+    color: var(--trd-yellow);
   }
-  .text-cycle-dark {
-    color: var(--cycle-dark);
+  .text-orange {
+    color: var(--trd-orange);
   }
-  .text-cycle-gray {
-    color: var(--cycle-gray);
+  .text-red {
+    color: var(--trd-red);
   }
-  .text-cycle-light {
-    color: var(--cycle-light);
+  .text-charcoal {
+    color: var(--charcoal);
   }
-  
-  .bg-cycle-green {
-    background-color: var(--cycle-green);
+  .text-warm-gray {
+    color: var(--warm-gray);
   }
-  .bg-cycle-blue {
-    background-color: var(--cycle-blue);
-  }
-  .bg-cycle-orange {
-    background-color: var(--cycle-orange);
-  }
-  .bg-cycle-dark {
-    background-color: var(--cycle-dark);
-  }
-  .bg-cycle-gray {
-    background-color: var(--cycle-gray);
-  }
-  .bg-cycle-light {
-    background-color: var(--cycle-light);
+  .text-cream {
+    color: var(--cream-light);
   }
   
-  .border-cycle-green {
-    border-color: var(--cycle-green);
+  .bg-sage {
+    background-color: var(--sage-green);
   }
-  .border-cycle-blue {
-    border-color: var(--cycle-blue);
+  .bg-beige {
+    background-color: var(--warm-beige);
   }
-  .border-cycle-orange {
-    border-color: var(--cycle-orange);
+  .bg-yellow {
+    background-color: var(--trd-yellow);
   }
-  .border-cycle-dark {
-    border-color: var(--cycle-dark);
+  .bg-orange {
+    background-color: var(--trd-orange);
   }
-  .border-cycle-gray {
-    border-color: var(--cycle-gray);
+  .bg-red {
+    background-color: var(--trd-red);
   }
-  .border-cycle-light {
-    border-color: var(--cycle-light);
+  .bg-charcoal {
+    background-color: var(--charcoal);
+  }
+  .bg-warm-gray {
+    background-color: var(--warm-gray);
+  }
+  .bg-cream {
+    background-color: var(--cream-light);
   }
   
-  .hover\:bg-cycle-green:hover {
-    background-color: hsl(142 76% 32%);
+  .border-sage {
+    border-color: var(--sage-green);
   }
-  .hover\:bg-cycle-blue:hover {
-    background-color: hsl(199 89% 44%);
+  .border-beige {
+    border-color: var(--warm-beige);
   }
-  .hover\:bg-cycle-orange:hover {
-    background-color: hsl(24 95% 49%);
+  .border-yellow {
+    border-color: var(--trd-yellow);
+  }
+  .border-orange {
+    border-color: var(--trd-orange);
+  }
+  .border-red {
+    border-color: var(--trd-red);
+  }
+  .border-charcoal {
+    border-color: var(--charcoal);
+  }
+  .border-warm-gray {
+    border-color: var(--warm-gray);
+  }
+  .border-cream {
+    border-color: var(--cream-light);
+  }
+  
+  .hover\:bg-sage:hover {
+    background-color: hsl(84 20% 50%);
+  }
+  .hover\:bg-orange:hover {
+    background-color: hsl(25 95% 60%);
+  }
+  .hover\:bg-yellow:hover {
+    background-color: hsl(50 95% 55%);
   }
 }

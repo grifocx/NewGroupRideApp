@@ -27,17 +27,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       tableName: 'session', // Use 'session' table for sessions
       createTableIfMissing: true
     }),
-    name: 'sessionId', // Custom session name
     secret: process.env.SESSION_SECRET || "cycle-connect-dev-secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // Set to true in production with HTTPS
-      httpOnly: false, // Allow JavaScript access for debugging
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      sameSite: 'lax', // Allow same-site requests
-      path: '/', // Ensure cookie is sent for all paths
-      domain: undefined // Don't set domain to allow localhost
+      secure: false,
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: 'lax'
     }
   }));
 

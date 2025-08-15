@@ -1,10 +1,10 @@
-# CycleConnect 🚴‍♀️
+# GroupRideApp 🚴‍♀️
 
 A comprehensive web application for discovering and organizing group cycling rides. Connect with local cyclists, create rides, and explore your community on two wheels.
 
 ## 🚀 Current Status: Production Ready ✅
 
-CycleConnect is a fully-featured cycling platform with PostgreSQL database persistence, comprehensive user profiles, and coast-to-coast ride coverage.
+GroupRideApp is a fully-featured cycling platform with PostgreSQL database persistence, comprehensive user profiles, and coast-to-coast ride coverage.
 
 ### ✅ Recently Completed Features (August 2025)
 - **PostgreSQL Database**: Migrated from in-memory to persistent PostgreSQL storage with Drizzle ORM

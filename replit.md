@@ -1,8 +1,8 @@
-# CycleConnect - Group Cycling Ride Platform
+# GroupRideApp - Group Cycling Ride Platform
 
 ## Overview
 
-CycleConnect is a production-ready full-stack web application designed to help cyclists discover and organize group rides. The platform allows users to create cycling events, find rides in their area, join existing groups, and connect with other cycling enthusiasts. The application features an interactive map interface, comprehensive database persistence, user profiles, and coast-to-coast ride coverage across the United States.
+GroupRideApp is a production-ready full-stack web application designed to help cyclists discover and organize group rides. The platform allows users to create cycling events, find rides in their area, join existing groups, and connect with other cycling enthusiasts. The application features an interactive map interface, comprehensive database persistence, user profiles, and coast-to-coast ride coverage across the United States.
 
 ## Recent Progress (August 15, 2025)
 

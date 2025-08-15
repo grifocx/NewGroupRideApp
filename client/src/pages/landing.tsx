@@ -17,14 +17,14 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cycle-light via-white to-cycle-green/10">
+    <div className="min-h-screen bg-gradient-to-br from-cream via-white to-sage/10">
       {/* Header */}
       <nav className="px-6 py-4 flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-cycle-green rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-sage rounded-full flex items-center justify-center">
             <i className="fas fa-bicycle text-white text-sm"></i>
           </div>
-          <span className="font-bold text-xl text-cycle-dark">CycleConnect</span>
+          <span className="font-bold text-xl text-charcoal">GroupRideApp</span>
         </div>
         <div className="space-x-3">
           <Button 
@@ -36,7 +36,7 @@ export default function Landing() {
           </Button>
           <Button 
             onClick={handleSignUp}
-            className="bg-cycle-green hover:bg-cycle-green/90"
+            className="bg-sage hover:bg-sage"
             data-testid="button-sign-up"
           >
             Sign Up
@@ -51,12 +51,12 @@ export default function Landing() {
             {/* Left Content */}
             <div className="space-y-8">
               <div className="space-y-4">
-                <h1 className="text-5xl font-bold text-cycle-dark leading-tight">
+                <h1 className="text-5xl font-bold text-charcoal leading-tight">
                   Connect with cyclists.
                   <br />
-                  <span className="text-cycle-green">Discover group rides.</span>
+                  <span className="text-sage">Discover group rides.</span>
                 </h1>
-                <p className="text-xl text-cycle-gray max-w-lg">
+                <p className="text-xl text-warm-gray max-w-lg">
                   Join a community of passionate cyclists. Find rides that match your pace, 
                   create memorable adventures, and explore your city on two wheels.
                 </p>
@@ -66,7 +66,7 @@ export default function Landing() {
                 <Button 
                   size="lg"
                   onClick={handleSignUp}
-                  className="bg-cycle-green hover:bg-cycle-green/90 text-lg px-8 py-3"
+                  className="bg-sage hover:bg-sage text-lg px-8 py-3"
                   data-testid="button-get-started"
                 >
                   Get Started Free
@@ -86,23 +86,23 @@ export default function Landing() {
               {/* Stats */}
               <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-cycle-green">15+</div>
-                  <div className="text-sm text-cycle-gray">Active Rides</div>
+                  <div className="text-2xl font-bold text-sage">15+</div>
+                  <div className="text-sm text-warm-gray">Active Rides</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-cycle-green">8+</div>
-                  <div className="text-sm text-cycle-gray">Cities Covered</div>
+                  <div className="text-2xl font-bold text-sage">8+</div>
+                  <div className="text-sm text-warm-gray">Cities Covered</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-cycle-green">100%</div>
-                  <div className="text-sm text-cycle-gray">Free to Join</div>
+                  <div className="text-2xl font-bold text-sage">100%</div>
+                  <div className="text-sm text-warm-gray">Free to Join</div>
                 </div>
               </div>
             </div>
 
             {/* Right Visual */}
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-cycle-green to-cycle-blue rounded-2xl p-8 text-white relative overflow-hidden">
+              <div className="aspect-square bg-gradient-to-br from-sage to-orange rounded-2xl p-8 text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-black/10"></div>
                 <div className="relative z-10 h-full flex flex-col justify-center items-center text-center space-y-6">
                   <i className="fas fa-bicycle text-6xl opacity-80"></i>
@@ -127,10 +127,10 @@ export default function Landing() {
       <section className="px-6 py-16 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-cycle-dark mb-4">
+            <h2 className="text-3xl font-bold text-charcoal mb-4">
               Everything you need for group cycling
             </h2>
-            <p className="text-cycle-gray max-w-2xl mx-auto">
+            <p className="text-warm-gray max-w-2xl mx-auto">
               Our platform makes it easy to discover rides, connect with cyclists, 
               and build lasting friendships in the cycling community.
             </p>
@@ -138,33 +138,33 @@ export default function Landing() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-cycle-green/10 rounded-full flex items-center justify-center mx-auto">
-                <i className="fas fa-map-marked-alt text-cycle-green text-2xl"></i>
+              <div className="w-16 h-16 bg-sage/10 rounded-full flex items-center justify-center mx-auto">
+                <i className="fas fa-map-marked-alt text-sage text-2xl"></i>
               </div>
-              <h3 className="text-xl font-semibold text-cycle-dark">Interactive Maps</h3>
-              <p className="text-cycle-gray">
+              <h3 className="text-xl font-semibold text-charcoal">Interactive Maps</h3>
+              <p className="text-warm-gray">
                 Explore rides on our interactive map. See exact starting locations, 
                 difficulty levels, and route details at a glance.
               </p>
             </div>
 
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-cycle-green/10 rounded-full flex items-center justify-center mx-auto">
-                <i className="fas fa-users text-cycle-green text-2xl"></i>
+              <div className="w-16 h-16 bg-sage/10 rounded-full flex items-center justify-center mx-auto">
+                <i className="fas fa-users text-sage text-2xl"></i>
               </div>
-              <h3 className="text-xl font-semibold text-cycle-dark">Find Your Community</h3>
-              <p className="text-cycle-gray">
+              <h3 className="text-xl font-semibold text-charcoal">Find Your Community</h3>
+              <p className="text-warm-gray">
                 Connect with cyclists who share your passion. From beginners to experts, 
                 there's a group for every rider.
               </p>
             </div>
 
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-cycle-green/10 rounded-full flex items-center justify-center mx-auto">
-                <i className="fas fa-plus-circle text-cycle-green text-2xl"></i>
+              <div className="w-16 h-16 bg-sage/10 rounded-full flex items-center justify-center mx-auto">
+                <i className="fas fa-plus-circle text-sage text-2xl"></i>
               </div>
-              <h3 className="text-xl font-semibold text-cycle-dark">Create & Organize</h3>
-              <p className="text-cycle-gray">
+              <h3 className="text-xl font-semibold text-charcoal">Create & Organize</h3>
+              <p className="text-warm-gray">
                 Organize your own rides and become a community leader. 
                 Set the pace, choose the route, and build your cycling network.
               </p>
@@ -174,7 +174,7 @@ export default function Landing() {
       </section>
 
       {/* Call to Action */}
-      <section className="px-6 py-16 bg-cycle-green text-white">
+      <section className="px-6 py-16 bg-sage text-white">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h2 className="text-3xl font-bold">
             Ready to start your cycling adventure?
@@ -185,10 +185,10 @@ export default function Landing() {
           <Button 
             size="lg"
             onClick={handleSignUp}
-            className="bg-white text-cycle-green hover:bg-gray-100 text-lg px-8 py-3"
+            className="bg-white text-sage hover:bg-gray-100 text-lg px-8 py-3"
             data-testid="button-join-now"
           >
-            Join CycleConnect Today
+            Join GroupRideApp Today
             <i className="fas fa-arrow-right ml-2"></i>
           </Button>
         </div>

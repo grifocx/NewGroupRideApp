@@ -17,20 +17,20 @@ export default function Header({ onCreateRide }: HeaderProps) {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
-              <Bike className="text-cycle-green text-2xl" />
-              <h1 className="text-xl font-bold text-cycle-dark">CycleConnect</h1>
+              <Bike className="text-sage text-2xl" />
+              <h1 className="text-xl font-bold text-charcoal">GroupRideApp</h1>
             </Link>
           </div>
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-cycle-green font-medium border-b-2 border-cycle-green pb-4 -mb-4">
+            <Link href="/" className="text-sage font-medium border-b-2 border-sage pb-4 -mb-4">
               Find Rides
             </Link>
-            <Link href="/my-rides" className="text-cycle-gray hover:text-cycle-dark transition-colors">
+            <Link href="/my-rides" className="text-warm-gray hover:text-charcoal transition-colors">
               My Rides
             </Link>
-            <Link href="/profile" className="text-cycle-gray hover:text-cycle-dark transition-colors">
+            <Link href="/profile" className="text-warm-gray hover:text-charcoal transition-colors">
               Profile
             </Link>
           </nav>
@@ -39,14 +39,14 @@ export default function Header({ onCreateRide }: HeaderProps) {
           <div className="flex items-center space-x-4">
             <button 
               onClick={onCreateRide}
-              className="bg-cycle-green text-white px-4 py-2 rounded-lg hover:bg-cycle-green/90 transition-colors font-medium"
+              className="bg-sage text-white px-4 py-2 rounded-lg hover:bg-sage transition-colors font-medium"
               data-testid="button-create-ride"
             >
               <i className="fas fa-plus mr-2"></i>Create Ride
             </button>
             <button
               onClick={() => setShowProfileModal(true)}
-              className="w-8 h-8 bg-cycle-blue rounded-full flex items-center justify-center hover:bg-cycle-blue/90 transition-colors"
+              className="w-8 h-8 bg-orange rounded-full flex items-center justify-center hover:bg-orange transition-colors"
               data-testid="button-user-profile"
               title={user ? `${user.firstName} ${user.lastName}` : "Profile"}
             >
