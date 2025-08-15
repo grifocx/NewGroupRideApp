@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { BiCycling } from "react-icons/bi";
 import { useAuth } from "@/hooks/useAuth";
 import ProfileModal from "@/components/ProfileModal";
 
