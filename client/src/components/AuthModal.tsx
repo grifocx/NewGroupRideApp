@@ -60,17 +60,26 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
       console.log("Login data:", data);
       const response = await apiRequest("/api/auth/login", "POST", data);
       console.log("=== CLIENT: Login API response received ===");
-      return response;
-    },
-    onSuccess: async (response) => {
-      console.log("=== CLIENT: Login successful (Token-based) ===");
+      
+      // Parse response immediately in mutationFn
       const responseData = await response.json();
+      console.log("=== CLIENT: Parsed response data ===");
       console.log("Response data:", responseData);
+      
+      return responseData; // Return parsed data, not Response object
+    },
+    onSuccess: (responseData) => {
+      console.log("=== CLIENT: Login successful (Token-based) ===");
+      console.log("Response data received in onSuccess:", responseData);
       
       // Store auth token in localStorage
       if (responseData.authToken) {
         localStorage.setItem('authToken', responseData.authToken);
         console.log("=== CLIENT: Auth token stored in localStorage ===");
+        console.log("Token value:", responseData.authToken);
+      } else {
+        console.log("=== CLIENT: WARNING - No authToken in response ===");
+        console.log("Available keys:", Object.keys(responseData));
       }
       
       toast({
