@@ -74,7 +74,6 @@ export default function ProfileModal({ onClose }: ProfileModalProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
-      window.location.reload();
     },
   });
 

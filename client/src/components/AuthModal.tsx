@@ -66,8 +66,6 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
       });
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       onClose();
-      // Reload to navigate to home page
-      window.location.reload();
     },
     onError: (error: Error) => {
       toast({
@@ -89,8 +87,6 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
       });
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       onClose();
-      // Reload to navigate to home page
-      window.location.reload();
     },
     onError: (error: Error) => {
       toast({
