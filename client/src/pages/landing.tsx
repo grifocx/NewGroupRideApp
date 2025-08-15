@@ -97,9 +97,8 @@ export default function Landing() {
                 </Button>
                 <Button 
                   size="lg"
-                  variant="outline"
                   onClick={handleSignIn}
-                  className="text-white border-2 border-white/30 hover:border-white hover:bg-white/10 text-lg px-12 py-4 rounded-2xl backdrop-blur-sm"
+                  className="bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 text-lg px-12 py-4 rounded-2xl backdrop-blur-sm font-medium"
                   data-testid="button-explore-rides"
                 >
                   Explore Rides
@@ -110,15 +109,15 @@ export default function Landing() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-16">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
                   <div className="text-3xl font-bold text-cyan-400 mb-2">15+</div>
-                  <div className="text-white/70">Active Rides Weekly</div>
+                  <div className="text-white/70">Available Rides</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
-                  <div className="text-3xl font-bold text-blue-400 mb-2">8</div>
-                  <div className="text-white/70">Cities Connected</div>
+                  <div className="text-3xl font-bold text-blue-400 mb-2">USA</div>
+                  <div className="text-white/70">Coast to Coast</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
-                  <div className="text-3xl font-bold text-purple-400 mb-2">100%</div>
-                  <div className="text-white/70">Free Community</div>
+                  <div className="text-3xl font-bold text-purple-400 mb-2">Free</div>
+                  <div className="text-white/70">Always Free</div>
                 </div>
               </div>
             </div>
@@ -139,14 +138,14 @@ export default function Landing() {
                   </div>
                   
                   <h2 className="text-5xl font-bold text-white leading-tight">
-                    Discover rides
+                    Find rides
                     <br />
-                    <span className="text-cyan-400">near you</span>
+                    <span className="text-cyan-400">everywhere</span>
                   </h2>
                   
                   <p className="text-xl text-white/70 leading-relaxed">
-                    Our intelligent map shows you rides happening in real-time. 
-                    Filter by skill level, distance, and vibe to find your perfect match.
+                    Browse group rides across major US cities. See starting locations, 
+                    difficulty levels, and join rides that match your cycling goals.
                   </p>
                 </div>
                 
@@ -154,36 +153,36 @@ export default function Landing() {
                   <div className="flex items-center space-x-4 p-4 bg-white/5 rounded-xl backdrop-blur-sm">
                     <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                       </svg>
                     </div>
                     <div>
-                      <div className="text-white font-semibold">Smart Matching</div>
-                      <div className="text-white/60 text-sm">AI pairs you with compatible riders</div>
+                      <div className="text-white font-semibold">Interactive Maps</div>
+                      <div className="text-white/60 text-sm">See exact starting locations for every ride</div>
                     </div>
                   </div>
                   
                   <div className="flex items-center space-x-4 p-4 bg-white/5 rounded-xl backdrop-blur-sm">
                     <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2.997 2.997 0 0 0 17.09 7c-.8 0-1.54.37-2.01.99l-2.54 3.31c-.74.97-.74 2.31 0 3.28L15 18v4h1zm-8 0v-6h-2l2-7.63A2.997 2.997 0 0 1 14.91 7c.8 0 1.54.37 2.01.99l2.54 3.31c.74.97.74 2.31 0 3.28L17 18v4h-1z"/>
                       </svg>
                     </div>
                     <div>
-                      <div className="text-white font-semibold">Verified Routes</div>
-                      <div className="text-white/60 text-sm">Community-tested safe paths</div>
+                      <div className="text-white font-semibold">Skill Levels</div>
+                      <div className="text-white/60 text-sm">From beginner to advanced rides</div>
                     </div>
                   </div>
                   
                   <div className="flex items-center space-x-4 p-4 bg-white/5 rounded-xl backdrop-blur-sm">
                     <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                        <path d="M16 4c2 0 4 1 4 4v8c0 3-2 4-4 4H8c-2 0-4-1-4-4V8c0-3 2-4 4-4h8m0-2H8C5 2 2 5 2 8v8c0 3 3 6 8 6h8c5 0 8-3 8-6V8c0-3-3-6-8-6z"/>
                       </svg>
                     </div>
                     <div>
-                      <div className="text-white font-semibold">Live Updates</div>
-                      <div className="text-white/60 text-sm">Real-time ride status and chat</div>
+                      <div className="text-white font-semibold">User Profiles</div>
+                      <div className="text-white/60 text-sm">Connect with fellow cyclists</div>
                     </div>
                   </div>
                 </div>
@@ -199,8 +198,8 @@ export default function Landing() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white mb-2">Live Map Interface</h3>
-                      <p className="text-white/60">See every ride, rider, and route in real-time</p>
+                      <h3 className="text-2xl font-bold text-white mb-2">Interactive Maps</h3>
+                      <p className="text-white/60">Browse rides and see starting locations</p>
                     </div>
                   </div>
                 </div>
@@ -235,9 +234,8 @@ export default function Landing() {
               </Button>
               <Button 
                 size="lg"
-                variant="outline"
                 onClick={handleSignIn}
-                className="text-white border-2 border-white/30 hover:border-white hover:bg-white/10 text-lg px-12 py-4 rounded-2xl backdrop-blur-sm"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 text-lg px-12 py-4 rounded-2xl backdrop-blur-sm font-medium"
                 data-testid="button-sign-in-cta"
               >
                 Sign In
