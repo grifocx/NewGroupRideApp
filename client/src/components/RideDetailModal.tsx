@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { formatFullDateTime, formatTime } from "@/utils/dateHelpers";
 import { getDifficultyColor, getDifficultyLabel, formatRideDetails } from "@/utils/rideHelpers";
 import { shareRide } from "@/utils/shareHelpers";
+import RideMap from "@/components/RideMap";
 
 interface RideDetailModalProps {
   ride: Ride;
@@ -153,6 +154,12 @@ export default function RideDetailModal({ ride, onClose, onUpdate }: RideDetailM
             )}
           </div>
           
+          {/* Ride Location Map */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-cycle-dark mb-3">Starting Location</h4>
+            <RideMap ride={ride} height="h-48" />
+          </div>
+
           {ride.description && (
             <div className="bg-gray-50 p-4 rounded-lg mb-6">
               <h4 className="font-semibold text-cycle-dark mb-2">Description</h4>

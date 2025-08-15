@@ -14,20 +14,28 @@ declare global {
  * Load Leaflet CSS and JavaScript
  */
 export async function loadLeaflet(): Promise<void> {
-  // Load CSS
+  // Load CSS first
   if (!document.querySelector('link[href*="leaflet"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    link.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+    link.crossOrigin = '';
     document.head.appendChild(link);
   }
 
   // Load JS
   if (!window.L) {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, reject) => {
       const script = document.createElement('script');
       script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-      script.onload = () => resolve();
+      script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+      script.crossOrigin = '';
+      script.onload = () => {
+        // Wait a bit for Leaflet to fully initialize
+        setTimeout(() => resolve(), 100);
+      };
+      script.onerror = () => reject(new Error('Failed to load Leaflet'));
       document.head.appendChild(script);
     });
   }

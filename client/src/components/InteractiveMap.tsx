@@ -18,12 +18,17 @@ export default function InteractiveMap({ rides, selectedRide, onRideSelect }: In
 
   useEffect(() => {
     const initMap = async () => {
-      await loadLeaflet();
-      
-      if (!mapRef.current || mapInstanceRef.current) return;
+      try {
+        await loadLeaflet();
+        
+        if (!mapRef.current || mapInstanceRef.current) return;
 
-      setIsLoading(false);
-      mapInstanceRef.current = createMap(mapRef.current);
+        setIsLoading(false);
+        mapInstanceRef.current = createMap(mapRef.current);
+      } catch (error) {
+        console.error('Error initializing map:', error);
+        setIsLoading(false);
+      }
     };
 
     initMap();
@@ -68,6 +73,20 @@ export default function InteractiveMap({ rides, selectedRide, onRideSelect }: In
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cycle-green mx-auto mb-4"></div>
             <p className="text-cycle-gray">Loading map...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!mapInstanceRef.current) {
+    return (
+      <div className="flex-1 relative bg-gray-100">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-gray-500">
+            <i className="fas fa-map text-6xl mb-4 opacity-50"></i>
+            <p className="text-lg">Map temporarily unavailable</p>
+            <p className="text-sm">Showing ride locations in list view</p>
           </div>
         </div>
       </div>
