@@ -17,13 +17,7 @@ export default function Header({ onCreateRide }: HeaderProps) {
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <circle cx="5.5" cy="17.5" r="3.5"/>
-                  <circle cx="18.5" cy="17.5" r="3.5"/>
-                  <path d="M9 17.5h6"/>
-                  <path d="M12 14l-3-3 2-3h4l2 3-3 3"/>
-                  <path d="M9 8h6"/>
-                </svg>
+                <span className="text-white text-lg">🚴</span>
               </div>
               <h1 className="text-xl font-bold text-charcoal">GroupRideApp</h1>
             </Link>
