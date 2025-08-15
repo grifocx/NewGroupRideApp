@@ -18,8 +18,12 @@ export default function Header({ onCreateRide }: HeaderProps) {
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M5 20.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5c1.8 0 3.3 1.1 4 2.7L12 7h2l1.2 2.1c.7-1.6 2.2-2.7 4-2.7 2.5 0 4.5 2 4.5 4.5s-2 4.5-4.5 4.5c-1.8 0-3.3-1.1-4-2.7L12 16h-2l-1.2-2.1c-.7 1.6-2.2 2.7-4 2.7zm0-7c-1.4 0-2.5 1.1-2.5 2.5s1.1 2.5 2.5 2.5 2.5-1.1 2.5-2.5-1.1-2.5-2.5-2.5zm14 0c-1.4 0-2.5 1.1-2.5 2.5s1.1 2.5 2.5 2.5 2.5-1.1 2.5-2.5-1.1-2.5-2.5-2.5zM7.5 5L9 6.5 13 2.5 11.5 1 7.5 5z"/>
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <circle cx="5.5" cy="17.5" r="3.5"/>
+                  <circle cx="18.5" cy="17.5" r="3.5"/>
+                  <path d="M9 17.5h6"/>
+                  <path d="M12 14l-3-3 2-3h4l2 3-3 3"/>
+                  <path d="M9 8h6"/>
                 </svg>
               </div>
               <h1 className="text-xl font-bold text-charcoal">GroupRideApp</h1>
