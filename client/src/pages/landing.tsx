@@ -82,7 +82,7 @@ export default function Landing() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("username") as string; // Form field is named 'username' but contains email
+    const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     
     loginMutation.mutate({ email, password });
@@ -159,15 +159,15 @@ export default function Landing() {
               <TabsContent value="login" className="space-y-4">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-username" className="text-white/90">Email</Label>
+                    <Label htmlFor="login-email" className="text-white/90">Email</Label>
                     <Input
-                      id="login-username"
-                      name="username"
+                      id="login-email"
+                      name="email"
                       type="email"
                       placeholder="your@email.com"
                       required
                       className="bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/50 focus:border-cyan-400"
-                      data-testid="input-login-username"
+                      data-testid="input-login-email"
                     />
                   </div>
                   <div className="space-y-2">
