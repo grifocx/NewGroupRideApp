@@ -4,6 +4,8 @@ import { storage } from "./storage";
 import { insertRideSchema, insertRideParticipantSchema, insertUserSchema, type User } from "@shared/schema";
 import { z } from "zod";
 import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
+import { db } from "./db";
 
 // Extend session to include user
 declare module "express-session" {
@@ -13,8 +15,18 @@ declare module "express-session" {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Session middleware
+  // PostgreSQL session store
+  const PgSession = connectPgSimple(session);
+  
+  // Session middleware with PostgreSQL storage
   app.use(session({
+    store: new PgSession({
+      conObject: {
+        connectionString: process.env.DATABASE_URL,
+      },
+      tableName: 'session', // Use 'session' table for sessions
+      createTableIfMissing: true
+    }),
     secret: process.env.SESSION_SECRET || "cycle-connect-dev-secret",
     resave: false,
     saveUninitialized: false,
