@@ -58,9 +58,9 @@ export default function Landing() {
             <div className="space-y-8">
               <div className="space-y-6">
                 <h1 className="text-6xl md:text-7xl font-bold text-charcoal leading-tight">
-                  Find Your
+                  <span className="bg-gradient-to-r from-sage to-orange bg-clip-text text-transparent">Discover</span>
                   <br />
-                  <span className="bg-gradient-to-r from-sage to-orange bg-clip-text text-transparent">Perfect Ride</span>
+                  Your Perfect Ride
                 </h1>
                 <p className="text-xl text-warm-gray max-w-2xl mx-auto leading-relaxed">
                   Connect with local cyclists, discover amazing routes, and join group rides 
