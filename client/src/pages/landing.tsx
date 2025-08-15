@@ -36,7 +36,10 @@ export default function Landing() {
         title: "Welcome back!",
         description: "You've successfully logged in.",
       });
-      setLocation("/");
+      // Force page refresh to ensure session is recognized
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
     },
     onError: (error: Error) => {
       toast({
@@ -68,7 +71,10 @@ export default function Landing() {
         title: "Account created!",
         description: "Welcome to GroupRideApp.",
       });
-      setLocation("/");
+      // Force page refresh to ensure session is recognized
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
     },
     onError: (error: Error) => {
       toast({
