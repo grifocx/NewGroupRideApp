@@ -22,9 +22,9 @@ export default function Landing() {
   }
 
   const loginMutation = useMutation({
-    mutationFn: async ({ username, password }: { username: string; password: string }) => {
+    mutationFn: async ({ email, password }: { email: string; password: string }) => {
       const response = await apiRequest("/api/auth/login", "POST", {
-        username,
+        email,
         password,
       });
       return response.json();
@@ -82,10 +82,10 @@ export default function Landing() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const username = formData.get("username") as string;
+    const email = formData.get("username") as string; // Form field is named 'username' but contains email
     const password = formData.get("password") as string;
     
-    loginMutation.mutate({ username, password });
+    loginMutation.mutate({ email, password });
   };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
