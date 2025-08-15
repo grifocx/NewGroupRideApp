@@ -139,6 +139,15 @@ export class MemStorage implements IStorage {
       date: new Date(insertRide.date),
       participantCount: 0,
       createdAt: new Date(),
+      duration: insertRide.duration || null,
+      description: insertRide.description || null,
+      startLatitude: insertRide.startLatitude || null,
+      startLongitude: insertRide.startLongitude || null,
+      distance: insertRide.distance || null,
+      recurringType: insertRide.recurringType || null,
+      maxParticipants: insertRide.maxParticipants || null,
+      requiresApproval: insertRide.requiresApproval || false,
+      hasRouteMap: insertRide.hasRouteMap || false,
     };
     this.rides.set(id, ride);
     return ride;
@@ -191,8 +200,8 @@ export class MemStorage implements IStorage {
     
     // Update participant count
     const ride = this.rides.get(rideId);
-    if (ride && ride.participantCount > 0) {
-      ride.participantCount = ride.participantCount - 1;
+    if (ride && (ride.participantCount ?? 0) > 0) {
+      ride.participantCount = (ride.participantCount ?? 0) - 1;
       this.rides.set(ride.id, ride);
     }
     

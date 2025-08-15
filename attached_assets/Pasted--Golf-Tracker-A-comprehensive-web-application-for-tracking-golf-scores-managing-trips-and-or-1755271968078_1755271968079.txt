@@ -1,0 +1,119 @@
+# Golf Tracker 🏌️
+
+A comprehensive web application for tracking golf scores, managing trips, and organizing friendly competitions with your golf group.
+
+## 🚀 Current Status: MVP Complete ✅
+
+The Golf Tracker has reached MVP (Minimum Viable Product) status with all core functionality implemented and ready for use.
+
+### ✅ Implemented Features
+- **User Authentication**: Secure login with Replit OAuth + local demo accounts
+- **Trip Management**: Create and organize golf trips with dates and descriptions
+- **Player Management**: Add players to trips with dialog interface and form validation
+- **Round Creation**: Set up golf rounds with course details and hole counts
+- **Score Tracking**: Hole-by-hole score entry with real-time calculations
+- **Leaderboards**: Live rankings showing total scores across all rounds
+- **Mobile Responsive**: Fully optimized for mobile devices and tablets
+
+## 🎯 Getting Started
+
+### For Users
+1. **Sign In**: Use Replit OAuth or demo accounts (admin@golf.com / user@golf.com)
+2. **Create a Trip**: Set up your golf weekend with dates and details
+3. **Add Players**: Click "Add Player" button, enter name and optional email
+4. **Create Rounds**: Add golf rounds with course names and dates
+5. **Track Scores**: Enter scores hole-by-hole during or after your round
+6. **View Leaderboards**: See live rankings and competition results
+
+### For Developers
+1. **Environment**: This app runs on Replit with integrated database and authentication
+2. **Start Development**: Click "Run" to start the development server
+3. **Database**: PostgreSQL database is automatically provisioned and configured
+4. **Authentication**: Replit OAuth is pre-configured for user management
+
+## 📋 Demo Accounts
+
+For testing and development, use these demo accounts:
+
+- **Admin Account**: `admin@golf.com` / `password`
+- **Regular User**: `user@golf.com` / `password`
+
+Admin users can manage all aspects of the application, while regular users can create trips, manage players, and track scores.
+
+## 🏗️ Technical Architecture
+
+### Frontend Stack
+- **React 18** with TypeScript for type safety
+- **Wouter** for lightweight client-side routing
+- **TanStack Query** for server state management
+- **shadcn/ui** component library with Radix UI
+- **Tailwind CSS** with custom golf-themed styling
+- **React Hook Form** with Zod validation
+- **Vite** for fast development and builds
+
+### Backend Stack
+- **Node.js** with TypeScript in ESM configuration
+- **Express.js** for REST API endpoints
+- **Replit OAuth** for authentication integration
+- **PostgreSQL** database with Neon serverless hosting
+- **Drizzle ORM** for type-safe database operations
+- **Session management** with PostgreSQL storage
+
+### Database Schema
+```
+users (Replit OAuth)
+├── trips (golf trips/weekends)
+│   ├── trip_players (participants)
+│   └── rounds (golf rounds)
+│       └── scores (hole-by-hole scores)
+└── sessions (authentication)
+```
+
+## 🎮 Live Application
+
+The application is running at the Replit URL. Key features you can test:
+
+1. **Authentication Flow**: Sign in with Replit OAuth
+2. **Trip Creation**: Create a new golf trip with dates
+3. **Player Management**: Add players using dialog form with validation
+4. **Round Setup**: Create golf rounds with course information
+5. **Score Entry**: Enter scores hole-by-hole with mobile-optimized interface
+6. **Leaderboards**: View real-time rankings and competition results
+
+## 📱 Mobile Experience
+
+The application is fully optimized for mobile use:
+- Touch-friendly score entry with large input fields
+- Responsive design that works on all screen sizes
+- Mobile-optimized navigation and interactions
+- Fast loading times for on-course usage
+
+## 🚧 Next Steps
+
+### Planned Features
+- **Player Handicaps**: Add handicap tracking for fair competition with net scoring
+- **Enhanced Statistics**: Detailed player analytics and performance tracking  
+- **Course Information**: Course par tracking and hole-specific data
+- **Tournament Formats**: Support for different competition types
+
+### Contributing
+This project uses modern TypeScript patterns and follows React best practices. All components include proper TypeScript typing and are optimized for mobile use.
+
+## 🔐 Security & Privacy
+
+- **Authentication**: Secure OAuth integration with Replit + local demo accounts
+- **Data Protection**: All user data is properly secured and validated
+- **Session Management**: PostgreSQL-backed sessions with automatic expiry
+- **Access Control**: Role-based permissions with proper authorization checks
+
+## 📞 Support & Feedback
+
+For questions or feedback about the Golf Tracker application, use the Replit environment or create an issue in the project.
+- Check the documentation in `/docs` folder first
+- Review the current sprint status in [Task Tracker](docs/TASK_TRACKER.md)
+- Report bugs or request features through normal development channels
+
+---
+
+**Golf Tracker v1.0** - Built with ❤️ for golf enthusiasts  
+*Last Updated: August 4, 2025*
