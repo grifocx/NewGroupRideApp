@@ -104,19 +104,59 @@ export default function Landing() {
             <div className="relative">
               <div className="aspect-square bg-gradient-to-br from-sage to-orange rounded-2xl p-8 text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-black/10"></div>
-                <div className="relative z-10 h-full flex flex-col justify-center items-center text-center space-y-6">
-                  <i className="fas fa-bicycle text-6xl opacity-80"></i>
-                  <div className="space-y-2">
-                    <h3 className="text-2xl font-bold">Join Your First Ride</h3>
-                    <p className="text-sm opacity-90">
-                      From coffee shop tours to mountain adventures - 
-                      find rides that match your style and skill level.
-                    </p>
+                
+                {/* Cycling Scene Illustration */}
+                <div className="relative z-10 h-full flex flex-col justify-between">
+                  {/* Top section with cyclists */}
+                  <div className="flex justify-between items-start pt-4">
+                    <div className="flex flex-col items-center space-y-1">
+                      <i className="fas fa-bicycle text-2xl opacity-70 transform -rotate-12"></i>
+                      <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                        <i className="fas fa-user text-xs"></i>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center space-y-1">
+                      <i className="fas fa-bicycle text-3xl opacity-90"></i>
+                      <div className="w-6 h-6 bg-yellow/30 rounded-full flex items-center justify-center">
+                        <i className="fas fa-user text-xs"></i>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center space-y-1">
+                      <i className="fas fa-bicycle text-2xl opacity-60 transform rotate-12"></i>
+                      <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                        <i className="fas fa-user text-xs"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Center content */}
+                  <div className="text-center space-y-4">
+                    <div className="space-y-2">
+                      <h3 className="text-2xl font-bold">Join Your First Ride</h3>
+                      <p className="text-sm opacity-90">
+                        From coffee shop tours to mountain adventures - 
+                        find rides that match your style and skill level.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Bottom section with path/route */}
+                  <div className="flex justify-center items-end pb-4">
+                    <div className="flex items-center space-x-2 opacity-60">
+                      <i className="fas fa-map-marker-alt text-lg"></i>
+                      <div className="w-12 h-1 bg-white/40 rounded-full"></div>
+                      <div className="w-8 h-1 bg-white/60 rounded-full"></div>
+                      <div className="w-4 h-1 bg-white/40 rounded-full"></div>
+                      <i className="fas fa-flag text-lg"></i>
+                    </div>
                   </div>
                 </div>
-                {/* Decorative elements */}
-                <div className="absolute top-4 right-4 w-16 h-16 bg-white/10 rounded-full"></div>
-                <div className="absolute bottom-8 left-4 w-8 h-8 bg-white/10 rounded-full"></div>
+
+                {/* Background decorative elements */}
+                <div className="absolute top-6 right-6 w-12 h-12 bg-white/10 rounded-full"></div>
+                <div className="absolute bottom-12 left-6 w-8 h-8 bg-white/10 rounded-full"></div>
+                <div className="absolute top-1/3 left-8 w-4 h-4 bg-white/10 rounded-full"></div>
+                <div className="absolute bottom-1/3 right-8 w-6 h-6 bg-white/10 rounded-full"></div>
               </div>
             </div>
           </div>
