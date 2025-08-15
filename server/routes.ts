@@ -1,10 +1,138 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertRideSchema, insertRideParticipantSchema } from "@shared/schema";
+import { insertRideSchema, insertRideParticipantSchema, insertUserSchema, type User } from "@shared/schema";
 import { z } from "zod";
+import session from "express-session";
+
+// Extend session to include user
+declare module "express-session" {
+  interface SessionData {
+    user?: User;
+  }
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Session middleware
+  app.use(session({
+    secret: process.env.SESSION_SECRET || "cycle-connect-dev-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true in production with HTTPS
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+  }));
+
+  // Auth middleware to check if user is logged in
+  const requireAuth = (req: any, res: any, next: any) => {
+    if (!req.session.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+    next();
+  };
+
+  // Authentication routes
+  app.post("/api/auth/register", async (req, res) => {
+    try {
+      const validatedData = insertUserSchema.parse(req.body);
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByUsername(validatedData.username);
+      if (existingUser) {
+        return res.status(400).json({ message: "Username already exists" });
+      }
+
+      const user = await storage.createUser(validatedData);
+      req.session.user = user;
+      res.status(201).json(user);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid user data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create user" });
+    }
+  });
+
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+      }
+
+      const user = await storage.authenticateUser(email, password);
+      if (!user) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      req.session.user = user;
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Login failed" });
+    }
+  });
+
+  app.post("/api/auth/logout", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Logout failed" });
+      }
+      res.json({ message: "Logged out successfully" });
+    });
+  });
+
+  app.get("/api/auth/user", (req, res) => {
+    if (req.session.user) {
+      res.json(req.session.user);
+    } else {
+      res.status(401).json({ message: "Not authenticated" });
+    }
+  });
+
+  // User routes
+  app.get("/api/users", async (req, res) => {
+    try {
+      const users = await storage.getUsers();
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  app.get("/api/users/:id", async (req, res) => {
+    try {
+      const user = await storage.getUser(req.params.id);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  app.patch("/api/users/:id", requireAuth, async (req, res) => {
+    try {
+      // Users can only update their own profile
+      if (req.session.user!.id !== req.params.id) {
+        return res.status(403).json({ message: "Can only update your own profile" });
+      }
+
+      const user = await storage.updateUser(req.params.id, req.body);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Update session with new user data
+      req.session.user = user;
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update user" });
+    }
+  });
   // Get all rides with optional filters
   app.get("/api/rides", async (req, res) => {
     try {
@@ -41,9 +169,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Create new ride
-  app.post("/api/rides", async (req, res) => {
+  app.post("/api/rides", requireAuth, async (req, res) => {
     try {
-      const validatedData = insertRideSchema.parse(req.body);
+      const validatedData = insertRideSchema.parse({
+        ...req.body,
+        organizerId: req.session.user!.id
+      });
       const ride = await storage.createRide(validatedData);
       res.status(201).json(ride);
     } catch (error) {
@@ -55,12 +186,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Update ride
-  app.patch("/api/rides/:id", async (req, res) => {
+  app.patch("/api/rides/:id", requireAuth, async (req, res) => {
     try {
-      const ride = await storage.updateRide(req.params.id, req.body);
-      if (!ride) {
+      const existingRide = await storage.getRide(req.params.id);
+      if (!existingRide) {
         return res.status(404).json({ message: "Ride not found" });
       }
+      
+      // Only the organizer can update the ride
+      if (existingRide.organizerId !== req.session.user!.id) {
+        return res.status(403).json({ message: "Only the ride organizer can update this ride" });
+      }
+
+      const ride = await storage.updateRide(req.params.id, req.body);
       res.json(ride);
     } catch (error) {
       res.status(500).json({ message: "Failed to update ride" });
@@ -68,8 +206,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Delete ride
-  app.delete("/api/rides/:id", async (req, res) => {
+  app.delete("/api/rides/:id", requireAuth, async (req, res) => {
     try {
+      const existingRide = await storage.getRide(req.params.id);
+      if (!existingRide) {
+        return res.status(404).json({ message: "Ride not found" });
+      }
+      
+      // Only the organizer can delete the ride
+      if (existingRide.organizerId !== req.session.user!.id) {
+        return res.status(403).json({ message: "Only the ride organizer can delete this ride" });
+      }
+
       const success = await storage.deleteRide(req.params.id);
       if (!success) {
         return res.status(404).json({ message: "Ride not found" });

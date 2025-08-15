@@ -57,10 +57,7 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => {
-      return await apiRequest("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
+      return await apiRequest("/api/auth/login", "POST", data);
     },
     onSuccess: () => {
       toast({
@@ -83,10 +80,7 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterData) => {
-      return await apiRequest("/api/auth/register", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
+      return await apiRequest("/api/auth/register", "POST", data);
     },
     onSuccess: () => {
       toast({
@@ -304,7 +298,7 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="short">Short (< 20 miles)</SelectItem>
+                      <SelectItem value="short">Short (&lt; 20 miles)</SelectItem>
                       <SelectItem value="medium">Medium (20-50 miles)</SelectItem>
                       <SelectItem value="long">Long (50-100 miles)</SelectItem>
                       <SelectItem value="ultra">Ultra (100+ miles)</SelectItem>
@@ -359,9 +353,10 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
           <div className="mt-6 text-center">
             <p className="text-cycle-gray">
               {mode === "login" ? "Don't have an account?" : "Already have an account?"}
+              {" "}
               <button
                 onClick={() => onModeChange(mode === "login" ? "register" : "login")}
-                className="ml-1 text-cycle-green hover:underline"
+                className="text-cycle-green hover:underline"
                 data-testid="button-switch-auth-mode"
               >
                 {mode === "login" ? "Sign up" : "Sign in"}

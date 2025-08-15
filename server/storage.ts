@@ -235,6 +235,14 @@ export class DatabaseStorage implements IStorage {
     return user || undefined;
   }
 
+  async authenticateUser(username: string, password: string): Promise<User | null> {
+    const user = await this.getUserByUsername(username);
+    if (user && user.password === password) {
+      return user;
+    }
+    return null;
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
@@ -246,7 +254,7 @@ export class DatabaseStorage implements IStorage {
   async updateUser(id: string, updates: Partial<User>): Promise<User | undefined> {
     const [user] = await db
       .update(users)
-      .set(updates)
+      .set({ ...updates, joinedAt: new Date() })
       .where(eq(users.id, id))
       .returning();
     return user || undefined;
@@ -394,8 +402,9 @@ export class DatabaseStorage implements IStorage {
     // Create cyclist profiles
     const sampleUsers: InsertUser[] = [
       {
-        username: "sarah_cyclist",
+        username: "sarah@cycling.com",
         email: "sarah@cycling.com",
+        password: "Password69",
         firstName: "Sarah",
         lastName: "Martinez",
         bio: "Weekend warrior who loves exploring coffee shops by bike. Leading group rides for 3 years and always happy to help new cyclists!",
@@ -407,8 +416,9 @@ export class DatabaseStorage implements IStorage {
         isActive: true,
       },
       {
-        username: "mike_climber",
+        username: "mike@ridehigh.com",
         email: "mike@ridehigh.com",
+        password: "Password69",
         firstName: "Mike",
         lastName: "Rodriguez",
         bio: "Hill climbing enthusiast and bike mechanic. If there's a mountain to climb, I'm your guy! 15+ years racing experience.",
@@ -420,8 +430,9 @@ export class DatabaseStorage implements IStorage {
         isActive: true,
       },
       {
-        username: "elena_endurance",
+        username: "elena@ultracycling.net",
         email: "elena@ultracycling.net",
+        password: "Password69",
         firstName: "Elena",
         lastName: "Kim",
         bio: "Ultra-distance cyclist and certified coach. Completed 5 centuries and 2 double centuries. I organize training rides for serious cyclists.",
@@ -433,8 +444,9 @@ export class DatabaseStorage implements IStorage {
         isActive: true,
       },
       {
-        username: "alex_commuter",
+        username: "alex@biketowork.org",
         email: "alex@biketowork.org",
+        password: "Password69",
         firstName: "Alex",
         lastName: "Thompson",
         bio: "Daily bike commuter and urban cycling advocate. Love showing people that cycling is the best way to get around the city!",
@@ -446,8 +458,9 @@ export class DatabaseStorage implements IStorage {
         isActive: true,
       },
       {
-        username: "jenny_social",
+        username: "jenny@socialrides.com",
         email: "jenny@socialrides.com",
+        password: "Password69",
         firstName: "Jenny",
         lastName: "Chen",
         bio: "Social ride organizer who believes cycling is better with friends. New to cycling but passionate about building community!",
@@ -459,8 +472,9 @@ export class DatabaseStorage implements IStorage {
         isActive: true,
       },
       {
-        username: "david_touring",
+        username: "david@biketour.adventure",
         email: "david@biketour.adventure",
+        password: "Password69",
         firstName: "David",
         lastName: "Wilson",
         bio: "Bike touring enthusiast who has cycled across 15 states. I organize multi-day adventures and love sharing touring tips!",
@@ -472,8 +486,9 @@ export class DatabaseStorage implements IStorage {
         isActive: true,
       },
       {
-        username: "lisa_family",
+        username: "lisa@familybikes.fun",
         email: "lisa@familybikes.fun",
+        password: "Password69",
         firstName: "Lisa",
         lastName: "Anderson",
         bio: "Mom of two who got back into cycling last year. I organize family-friendly rides and love showing kids that biking is fun!",
@@ -485,8 +500,9 @@ export class DatabaseStorage implements IStorage {
         isActive: true,
       },
       {
-        username: "carlos_speed",
+        username: "carlos@fastwheels.racing",
         email: "carlos@fastwheels.racing",
+        password: "Password69",
         firstName: "Carlos",
         lastName: "Gutierrez",
         bio: "Former competitive cyclist turned group ride leader. I organize fast-paced training rides and love helping others improve!",

@@ -1,11 +1,16 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { Bike } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import ProfileModal from "@/components/ProfileModal";
 
 interface HeaderProps {
   onCreateRide: () => void;
 }
 
 export default function Header({ onCreateRide }: HeaderProps) {
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const { user } = useAuth();
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,12 +44,22 @@ export default function Header({ onCreateRide }: HeaderProps) {
             >
               <i className="fas fa-plus mr-2"></i>Create Ride
             </button>
-            <div className="w-8 h-8 bg-cycle-blue rounded-full flex items-center justify-center">
+            <button
+              onClick={() => setShowProfileModal(true)}
+              className="w-8 h-8 bg-cycle-blue rounded-full flex items-center justify-center hover:bg-cycle-blue/90 transition-colors"
+              data-testid="button-user-profile"
+              title={user ? `${user.firstName} ${user.lastName}` : "Profile"}
+            >
               <i className="fas fa-user text-white text-sm"></i>
-            </div>
+            </button>
           </div>
         </div>
       </div>
+      
+      {/* Profile Modal */}
+      {showProfileModal && (
+        <ProfileModal onClose={() => setShowProfileModal(false)} />
+      )}
     </header>
   );
 }
