@@ -20,7 +20,7 @@ const updateProfileSchema = z.object({
   location: z.string().min(1, "Location is required"),
   experienceLevel: z.enum(["beginner", "intermediate", "advanced", "expert"]),
   preferredDistance: z.enum(["short", "medium", "long", "ultra"]),
-  bikeType: z.string().min(1, "Bike type is required"),
+  bikeType: z.string().optional(),
 });
 
 type UpdateProfileData = z.infer<typeof updateProfileSchema>;
@@ -193,7 +193,7 @@ export default function ProfileModal({ onClose }: ProfileModalProps) {
             </div>
 
             <div>
-              <Label htmlFor="bikeType">Bike Type</Label>
+              <Label htmlFor="bikeType">Bike Type (Optional)</Label>
               <Input
                 id="bikeType"
                 placeholder="e.g., Road Bike, Mountain Bike, Hybrid"

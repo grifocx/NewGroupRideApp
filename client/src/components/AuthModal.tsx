@@ -26,7 +26,6 @@ const registerSchema = z.object({
   location: z.string().min(1, "Location is required"),
   experienceLevel: z.enum(["beginner", "intermediate", "advanced", "expert"]),
   preferredDistance: z.enum(["short", "medium", "long", "ultra"]),
-  bikeType: z.string().min(1, "Bike type is required"),
 });
 
 type LoginData = z.infer<typeof loginSchema>;
@@ -303,20 +302,7 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="bikeType">Bike Type</Label>
-                <Input
-                  id="bikeType"
-                  placeholder="e.g., Road Bike, Mountain Bike, Hybrid"
-                  {...registerForm.register("bikeType")}
-                  data-testid="input-register-bike-type"
-                />
-                {registerForm.formState.errors.bikeType && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {registerForm.formState.errors.bikeType.message}
-                  </p>
-                )}
-              </div>
+
 
               <div>
                 <Label htmlFor="bio">Bio (Optional)</Label>
