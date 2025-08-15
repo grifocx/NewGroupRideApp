@@ -35,8 +35,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
       sameSite: 'lax'
-    }
+    },
+    name: 'cycle.sid' // Custom session cookie name for clarity
   }));
+
+  // Add session debugging middleware
+  app.use((req, res, next) => {
+    console.log('--- Session Debug ---');
+    console.log('Session ID:', req.sessionID);
+    console.log('Session exists:', !!req.session);
+    console.log('Session user:', req.session.user ? req.session.user.username : 'No user');
+    console.log('Request cookies:', req.headers.cookie);
+    console.log('User-Agent:', req.headers['user-agent']?.slice(0, 50) + '...');
+    console.log('--- End Session Debug ---');
+    next();
+  });
 
   // Auth middleware to check if user is logged in
   const requireAuth = (req: any, res: any, next: any) => {
@@ -98,8 +111,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error("Session save error:", err);
           return res.status(500).json({ message: "Session save failed" });
         }
+        console.log("=== LOGIN SUCCESS ===");
         console.log("Session saved successfully for user:", user.username);
         console.log("Session ID after login:", req.sessionID);
+        console.log("Session cookie will be set with name: cycle.sid");
+        console.log("Cookie settings:", {
+          secure: false,
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 1000,
+          sameSite: 'lax'
+        });
+        console.log("=== END LOGIN SUCCESS ===");
         res.json(user);
       });
     } catch (error) {
@@ -117,8 +139,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/auth/user", (req, res) => {
-    console.log("Auth check - Session ID:", req.sessionID);
-    console.log("Auth check - Session user:", req.session.user ? req.session.user.username : "No user");
+    console.log("=== AUTH CHECK ===");
+    console.log("Session ID:", req.sessionID);
+    console.log("Session user:", req.session.user ? req.session.user.username : "No user");
+    console.log("All session data:", req.session);
+    console.log("Request origin:", req.headers.origin);
+    console.log("Request referer:", req.headers.referer);
+    console.log("=== END AUTH CHECK ===");
     
     if (req.session.user) {
       res.json(req.session.user);

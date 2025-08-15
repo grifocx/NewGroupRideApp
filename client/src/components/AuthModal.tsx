@@ -56,17 +56,31 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => {
-      return await apiRequest("/api/auth/login", "POST", data);
+      console.log("=== CLIENT: Starting login mutation ===");
+      console.log("Login data:", data);
+      const response = await apiRequest("/api/auth/login", "POST", data);
+      console.log("=== CLIENT: Login API response received ===");
+      return response;
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      console.log("=== CLIENT: Login successful ===");
+      console.log("Response:", response);
+      console.log("Document cookies after login:", document.cookie);
+      
       toast({
         title: "Welcome back!",
         description: "You've been successfully logged in.",
       });
+      
+      console.log("=== CLIENT: Invalidating queries ===");
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      
+      console.log("=== CLIENT: Closing modal ===");
       onClose();
     },
     onError: (error: Error) => {
+      console.log("=== CLIENT: Login error ===");
+      console.log("Error:", error);
       toast({
         title: "Login failed",
         description: error.message,
