@@ -8,6 +8,40 @@ CycleConnect is a full-stack web application designed to help cyclists discover 
 
 Preferred communication style: Simple, everyday language.
 
+## Core Development Principles
+
+The following software design principles guide all development decisions in this project:
+
+### 1. Separation of Concerns (SoC)
+Break programs into distinct parts, each addressing a separate concern.
+- **Implementation**: Component structure (JSX), behavior (TypeScript), and presentation (CSS) are properly separated
+- **Practice**: React components focus on logic and markup while styling is handled separately
+- **Result**: Clear boundaries between different aspects of functionality
+
+### 2. Single Responsibility Principle (SRP)
+Each module, class, or function should have only one reason to change.
+- **Implementation**: Components have single, well-defined purposes (e.g., `UserProfile` only displays user information)
+- **Practice**: Create separate services or utility files for data fetching, authentication, and other concerns
+- **Result**: Highly cohesive, focused code that's easier to maintain and test
+
+### 3. Loose Coupling & High Cohesion
+Modules should be as independent as possible while elements within a module work closely together.
+- **Implementation**: Components are self-contained and communicate via props rather than internal state access
+- **Practice**: Avoid tight dependencies between components; use interfaces and abstraction layers
+- **Result**: More maintainable and flexible codebase with easier testing and modification
+
+### 4. Don't Repeat Yourself (DRY)
+Reduce code duplication by identifying and refactoring repeated patterns.
+- **Implementation**: Common functionality extracted into reusable components, hooks, and utility functions
+- **Practice**: Button styles, data fetching functions, and validation helpers are centralized
+- **Result**: Easier maintenance and consistent behavior across the application
+
+### 5. YAGNI ("You Aren't Gonna Need It")
+Avoid over-engineering by implementing only explicitly needed functionality.
+- **Implementation**: Focus on current requirements without adding unnecessary complexity
+- **Practice**: Don't add architectural patterns or features until they're actually required
+- **Result**: Cleaner, simpler codebase that's easier to understand and maintain
+
 ## System Architecture
 
 ### Frontend Architecture
@@ -47,15 +81,23 @@ The application employs a hybrid state management approach:
 Currently implements a simplified authentication system with placeholder user data. The architecture is prepared for full authentication integration with user sessions and role-based access control.
 
 ### Code Organization & Maintainability
-**Utils Architecture**: The project follows a modular utility approach with dedicated files for specific functionality:
-- **dateHelpers.ts**: Date formatting and manipulation functions
-- **rideHelpers.ts**: Ride-specific logic including difficulty styling and data formatting
-- **filterHelpers.ts**: Search and filtering logic with type-safe interfaces
-- **locationHelpers.ts**: Geolocation and distance calculation utilities
-- **mapHelpers.ts**: Leaflet map integration and marker management
-- **shareHelpers.ts**: Web Share API with clipboard fallback support
+**Utils Architecture**: The project demonstrates adherence to core design principles through modular utility organization:
 
-This organization promotes code reusability, easier testing, and better maintainability by separating concerns into focused modules.
+**Separation of Concerns Applied**:
+- **dateHelpers.ts**: Date formatting and manipulation functions (temporal concerns)
+- **rideHelpers.ts**: Ride-specific logic including difficulty styling and data formatting (domain logic)
+- **filterHelpers.ts**: Search and filtering logic with type-safe interfaces (search/filter concerns)
+- **locationHelpers.ts**: Geolocation and distance calculation utilities (location services)
+- **mapHelpers.ts**: Leaflet map integration and marker management (mapping concerns)
+- **shareHelpers.ts**: Web Share API with clipboard fallback support (sharing functionality)
+
+**Single Responsibility Principle**: Each utility module handles exactly one domain of functionality, making them focused and maintainable.
+
+**DRY Implementation**: Common functions are extracted into reusable utilities that multiple components can import and use.
+
+**Loose Coupling**: Components import specific utilities without tight dependencies, allowing for easy swapping or modification of implementations.
+
+This architecture promotes code reusability, easier testing, and better maintainability by separating concerns into focused, single-purpose modules.
 
 ## External Dependencies
 
@@ -85,3 +127,7 @@ This organization promotes code reusability, easier testing, and better maintain
 - **Zod**: Schema validation shared between client and server
 - **React Hook Form**: Performance-optimized form state management
 - **@hookform/resolvers**: Integration layer for Zod validation with React Hook Form
+
+## Additional Documentation
+
+- **DEVELOPMENT_GUIDE.md**: Comprehensive guide covering core design principles with practical examples and implementation guidelines for maintainable code development
