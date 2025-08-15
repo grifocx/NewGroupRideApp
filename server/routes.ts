@@ -19,6 +19,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const PgSession = connectPgSimple(session);
   
   // Session middleware with PostgreSQL storage
+  // Detect if running on Replit
+  const isReplit = process.env.REPLIT_DOMAINS || process.env.REPL_ID;
+  const cookieSettings = isReplit ? {
+    secure: false, // Replit uses HTTPS but internal communication is HTTP
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'none' as const, // Required for cross-origin on Replit
+    domain: undefined // Let browser handle domain automatically
+  } : {
+    secure: false,
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'lax' as const
+  };
+
   app.use(session({
     store: new PgSession({
       conObject: {
@@ -30,14 +45,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     secret: process.env.SESSION_SECRET || "cycle-connect-dev-secret",
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      secure: false,
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: 'lax'
-    },
+    cookie: cookieSettings,
     name: 'cycle.sid' // Custom session cookie name for clarity
   }));
+  
+  console.log("=== SESSION CONFIG ===");
+  console.log("Environment:", isReplit ? "Replit" : "Local");
+  console.log("Cookie settings:", cookieSettings);
+  console.log("REPLIT_DOMAINS:", process.env.REPLIT_DOMAINS);
+  console.log("=== END SESSION CONFIG ===");
 
   // Add session debugging middleware
   app.use((req, res, next) => {

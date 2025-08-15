@@ -4,12 +4,25 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 
-// CORS middleware - simple setup for development
+// CORS middleware - configured for Replit and local development
 app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const isReplit = process.env.REPLIT_DOMAINS || process.env.REPL_ID;
+  
+  // Allow credentials for session cookies
   res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Origin', req.headers.origin || 'http://localhost:5000');
+  
+  // Configure origin based on environment
+  if (isReplit) {
+    // On Replit, allow the current request origin
+    res.header('Access-Control-Allow-Origin', origin || req.headers.host);
+  } else {
+    // Local development
+    res.header('Access-Control-Allow-Origin', origin || 'http://localhost:5000');
+  }
+  
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Cookie');
   
   if (req.method === 'OPTIONS') {
     res.sendStatus(200);
