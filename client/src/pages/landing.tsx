@@ -23,25 +23,49 @@ export default function Landing() {
 
   const loginMutation = useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
+      console.log("=== LANDING: Login mutation started ===");
+      console.log("Credentials:", { email, password });
+      
       const response = await apiRequest("/api/auth/login", "POST", {
         email,
         password,
       });
-      return response.json();
+      
+      const responseData = await response.json();
+      console.log("=== LANDING: Login response received ===");
+      console.log("Response data:", responseData);
+      
+      return responseData;
     },
-    onSuccess: () => {
+    onSuccess: (responseData) => {
+      console.log("=== LANDING: Login onSuccess triggered ===");
+      console.log("Response data:", responseData);
+      
+      // Store auth token in localStorage (Token-based auth)
+      if (responseData && responseData.authToken) {
+        localStorage.setItem('authToken', responseData.authToken);
+        console.log("=== LANDING: Auth token stored in localStorage ===");
+        console.log("Token value:", responseData.authToken);
+      } else {
+        console.log("=== LANDING: WARNING - No authToken in response ===");
+        console.log("Response data:", responseData);
+      }
+      
       // Invalidate auth query to refresh user data
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       toast({
         title: "Welcome back!",
         description: "You've successfully logged in.",
       });
-      // Force page refresh to ensure session is recognized
+      
+      // Redirect to main app
       setTimeout(() => {
-        window.location.href = "/";
-      }, 500);
+        setLocation("/");
+      }, 100);
     },
     onError: (error: Error) => {
+      console.log("=== LANDING: Login onError triggered ===");
+      console.log("Error:", error);
       toast({
         title: "Login failed",
         description: error.message || "Invalid credentials",
@@ -86,10 +110,15 @@ export default function Landing() {
   });
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("=== LANDING: handleLogin called ===");
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    
+    console.log("=== LANDING: Form data extracted ===");
+    console.log("Email:", email);
+    console.log("Password:", password ? "***provided***" : "missing");
     
     loginMutation.mutate({ email, password });
   };
