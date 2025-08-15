@@ -9,6 +9,40 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Debug logger for network monitoring -->
+    <script>
+      // Inline debug logger to avoid loading issues
+      console.log("=== DEBUG LOGGER LOADED ===");
+
+      // Monitor all fetch requests
+      const originalFetch = window.fetch;
+      window.fetch = function(...args) {
+        console.log("=== FETCH REQUEST ===");
+        console.log("URL:", args[0]);
+        console.log("Options:", args[1]);
+        console.log("Headers:", args[1]?.headers);
+        console.log("Current localStorage authToken:", localStorage.getItem('authToken'));
+        
+        return originalFetch.apply(this, args)
+          .then(response => {
+            console.log("=== FETCH RESPONSE ===");
+            console.log("Status:", response.status);
+            console.log("Headers:", Object.fromEntries(response.headers.entries()));
+            return response;
+          });
+      };
+
+      // Monitor localStorage changes
+      const originalSetItem = localStorage.setItem;
+      localStorage.setItem = function(key, value) {
+        console.log("=== LOCALSTORAGE SET ===");
+        console.log("Key:", key);
+        console.log("Value:", value);
+        return originalSetItem.call(this, key, value);
+      };
+
+      console.log("=== DEBUG LOGGER ACTIVE ===");
+    </script>
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>

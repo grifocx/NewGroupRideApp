@@ -35,10 +35,24 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Serve debug logger file
+app.use('/debug-logger.js', express.static('debug-logger.js'));
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
   let capturedJsonResponse: Record<string, any> | undefined = undefined;
+
+  // Enhanced logging for auth-related requests
+  if (path.startsWith("/api/auth")) {
+    console.log(`\n=== ENHANCED REQUEST LOG ===`);
+    console.log(`${req.method} ${path}`);
+    console.log(`Headers:`, JSON.stringify(req.headers, null, 2));
+    console.log(`Body:`, JSON.stringify(req.body, null, 2));
+    console.log(`Cookies:`, req.headers.cookie);
+    console.log(`Authorization:`, req.headers.authorization);
+    console.log(`=== END REQUEST LOG ===\n`);
+  }
 
   const originalResJson = res.json;
   res.json = function (bodyJson, ...args) {
@@ -59,6 +73,15 @@ app.use((req, res, next) => {
       }
 
       log(logLine);
+      
+      // Enhanced response logging for auth requests
+      if (path.startsWith("/api/auth")) {
+        console.log(`\n=== ENHANCED RESPONSE LOG ===`);
+        console.log(`${req.method} ${path} -> ${res.statusCode}`);
+        console.log(`Response Headers:`, res.getHeaders());
+        console.log(`Response Body:`, capturedJsonResponse);
+        console.log(`=== END RESPONSE LOG ===\n`);
+      }
     }
   });
 

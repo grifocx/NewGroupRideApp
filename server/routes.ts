@@ -11,6 +11,7 @@ import { db } from "./db";
 declare module "express-session" {
   interface SessionData {
     user?: User;
+    authToken?: string;
   }
 }
 
