@@ -2,6 +2,23 @@ import { sql } from "drizzle-orm";
 import { pgTable, text, varchar, timestamp, integer, boolean, decimal } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { relations } from "drizzle-orm";
+
+export const users = pgTable("users", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  username: text("username").notNull().unique(),
+  email: text("email").notNull().unique(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  bio: text("bio"),
+  location: text("location"),
+  experienceLevel: text("experience_level", { enum: ["beginner", "intermediate", "advanced", "expert"] }),
+  preferredDistance: text("preferred_distance", { enum: ["short", "medium", "long", "ultra"] }),
+  bikeType: text("bike_type"),
+  joinedAt: timestamp("joined_at").defaultNow(),
+  profileImageUrl: text("profile_image_url"),
+  isActive: boolean("is_active").default(true),
+});
 
 export const rides = pgTable("rides", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -29,9 +46,39 @@ export const rides = pgTable("rides", {
 export const rideParticipants = pgTable("ride_participants", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   rideId: varchar("ride_id").notNull().references(() => rides.id),
-  participantId: varchar("participant_id").notNull(),
+  participantId: varchar("participant_id").notNull().references(() => users.id),
   participantName: text("participant_name").notNull(),
   joinedAt: timestamp("joined_at").defaultNow(),
+});
+
+// Relations
+export const usersRelations = relations(users, ({ many }) => ({
+  organizedRides: many(rides),
+  participatedRides: many(rideParticipants),
+}));
+
+export const ridesRelations = relations(rides, ({ one, many }) => ({
+  organizer: one(users, {
+    fields: [rides.organizerId],
+    references: [users.id],
+  }),
+  participants: many(rideParticipants),
+}));
+
+export const rideParticipantsRelations = relations(rideParticipants, ({ one }) => ({
+  ride: one(rides, {
+    fields: [rideParticipants.rideId],
+    references: [rides.id],
+  }),
+  participant: one(users, {
+    fields: [rideParticipants.participantId],
+    references: [users.id],
+  }),
+}));
+
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  joinedAt: true,
 });
 
 export const insertRideSchema = createInsertSchema(rides).omit({
@@ -50,6 +97,8 @@ export const insertRideParticipantSchema = createInsertSchema(rideParticipants).
   joinedAt: true,
 });
 
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type User = typeof users.$inferSelect;
 export type InsertRide = z.infer<typeof insertRideSchema>;
 export type Ride = typeof rides.$inferSelect;
 export type InsertRideParticipant = z.infer<typeof insertRideParticipantSchema>;
