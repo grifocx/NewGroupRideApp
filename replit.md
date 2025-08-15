@@ -18,6 +18,7 @@ The client-side is built with **React** using TypeScript and follows a component
 - **Wouter**: Lightweight client-side routing solution instead of React Router for minimal bundle size
 - **React Hook Form**: Form state management with Zod validation for type-safe form handling
 - **Responsive Design**: Mobile-first approach with dedicated mobile navigation and adaptive layouts
+- **Utils Organization**: Major functions extracted into organized utility modules within `client/src/utils/` for better maintainability and reusability
 
 ### Backend Architecture
 The server is built with **Express.js** following a RESTful API pattern. The architecture separates concerns with dedicated route handlers, storage abstraction, and middleware for logging and error handling.
@@ -44,6 +45,17 @@ The application employs a hybrid state management approach:
 
 ### Authentication & Security
 Currently implements a simplified authentication system with placeholder user data. The architecture is prepared for full authentication integration with user sessions and role-based access control.
+
+### Code Organization & Maintainability
+**Utils Architecture**: The project follows a modular utility approach with dedicated files for specific functionality:
+- **dateHelpers.ts**: Date formatting and manipulation functions
+- **rideHelpers.ts**: Ride-specific logic including difficulty styling and data formatting
+- **filterHelpers.ts**: Search and filtering logic with type-safe interfaces
+- **locationHelpers.ts**: Geolocation and distance calculation utilities
+- **mapHelpers.ts**: Leaflet map integration and marker management
+- **shareHelpers.ts**: Web Share API with clipboard fallback support
+
+This organization promotes code reusability, easier testing, and better maintainability by separating concerns into focused modules.
 
 ## External Dependencies
 

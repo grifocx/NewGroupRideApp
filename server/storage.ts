@@ -148,6 +148,7 @@ export class MemStorage implements IStorage {
       maxParticipants: insertRide.maxParticipants || null,
       requiresApproval: insertRide.requiresApproval || false,
       hasRouteMap: insertRide.hasRouteMap || false,
+      isRecurring: insertRide.isRecurring || false,
     };
     this.rides.set(id, ride);
     return ride;

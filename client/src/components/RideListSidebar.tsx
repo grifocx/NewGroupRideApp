@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { type Ride } from "@shared/schema";
-import { format } from "date-fns";
+import { formatDisplayDate, formatTime } from "@/utils/dateHelpers";
+import { getDifficultyColor, getDifficultyLabel, formatRideDetails, formatParticipantCount } from "@/utils/rideHelpers";
+import { createFilterParams, hasActiveFilters, clearAllFilters, applyQuickFilter, type RideFilters } from "@/utils/filterHelpers";
 
 interface RideListSidebarProps {
   rides: Ride[];
   isLoading: boolean;
   onRideSelect: (ride: Ride) => void;
   onSearch: (query: string) => void;
-  onFilterChange: (filters: any) => void;
+  onFilterChange: (filters: RideFilters) => void;
   onQuickFilter: (filterType: string, value: string) => void;
   searchQuery: string;
-  filters: any;
+  filters: RideFilters;
 }
 
 export default function RideListSidebar({
@@ -25,45 +27,9 @@ export default function RideListSidebar({
 }: RideListSidebarProps) {
   const [showMoreFilters, setShowMoreFilters] = useState(false);
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'easy': return 'bg-cycle-green';
-      case 'intermediate': return 'bg-cycle-orange';
-      case 'advanced': return 'bg-red-500';
-      default: return 'bg-gray-500';
-    }
-  };
-
-  const getDifficultyLabel = (difficulty: string) => {
-    return difficulty.toUpperCase();
-  };
-
-  const formatDate = (date: Date | string) => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    
-    if (dateObj.toDateString() === today.toDateString()) {
-      return 'Today';
-    } else if (dateObj.toDateString() === tomorrow.toDateString()) {
-      return 'Tomorrow';
-    } else {
-      return format(dateObj, 'EEE, MMM d');
-    }
-  };
-
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':');
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
-  };
-
   const handleQuickFilterClick = (filterType: string, value?: string) => {
     if (filterType === 'clear') {
-      onFilterChange({ difficulty: '', date: '', location: '' });
+      onFilterChange(clearAllFilters());
       onSearch('');
     } else {
       onQuickFilter(filterType, value || '');
@@ -155,7 +121,7 @@ export default function RideListSidebar({
           >
             <i className="fas fa-filter mr-1"></i>More
           </button>
-          {(searchQuery || filters.difficulty || filters.date || filters.location) && (
+          {hasActiveFilters(searchQuery, filters) && (
             <button 
               onClick={() => handleQuickFilterClick('clear')}
               className="px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full hover:bg-red-200 transition-colors"
@@ -258,7 +224,7 @@ export default function RideListSidebar({
                     <div className="flex items-center">
                       <i className="fas fa-calendar-alt w-4 mr-2"></i>
                       <span data-testid={`text-date-${ride.id}`}>
-                        {formatDate(ride.date)}, {formatTime(ride.startTime)}
+                        {formatDisplayDate(ride.date)}, {formatTime(ride.startTime)}
                       </span>
                     </div>
                     <div className="flex items-center">
@@ -270,13 +236,7 @@ export default function RideListSidebar({
                     <div className="flex items-center">
                       <i className="fas fa-route w-4 mr-2"></i>
                       <span data-testid={`text-distance-${ride.id}`}>
-                        {ride.distance ? `${ride.distance} miles` : 'Distance TBD'}
-                        {ride.duration && (
-                          <>
-                            <span className="mx-2">•</span>
-                            <span>{ride.duration} hours</span>
-                          </>
-                        )}
+                        {formatRideDetails(ride.distance, ride.duration)}
                       </span>
                     </div>
                   </div>
@@ -294,7 +254,7 @@ export default function RideListSidebar({
                         )}
                       </div>
                       <span className="text-xs text-cycle-gray" data-testid={`text-participants-${ride.id}`}>
-                        +{ride.participantCount || 0} joined
+                        {formatParticipantCount(ride.participantCount)}
                       </span>
                     </div>
                     <button 

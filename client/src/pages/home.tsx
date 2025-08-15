@@ -7,12 +7,14 @@ import InteractiveMap from "@/components/InteractiveMap";
 import CreateRideModal from "@/components/CreateRideModal";
 import RideDetailModal from "@/components/RideDetailModal";
 import MobileNav from "@/components/MobileNav";
+import { createFilterParams, applyQuickFilter, type RideFilters } from "@/utils/filterHelpers";
+import { getCurrentLocation, isGeolocationSupported } from "@/utils/locationHelpers";
 
 export default function Home() {
   const [selectedRide, setSelectedRide] = useState<Ride | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<RideFilters>({
     difficulty: "",
     date: "",
     location: "",
@@ -22,12 +24,7 @@ export default function Home() {
   const { data: rides = [], isLoading, refetch } = useQuery<Ride[]>({
     queryKey: ["/api/rides", { search: searchQuery, ...filters }],
     queryFn: async () => {
-      const params = new URLSearchParams();
-      if (searchQuery) params.append("search", searchQuery);
-      if (filters.difficulty) params.append("difficulty", filters.difficulty);
-      if (filters.date) params.append("date", filters.date);
-      if (filters.location) params.append("location", filters.location);
-      
+      const params = createFilterParams(searchQuery, filters);
       const response = await fetch(`/api/rides?${params}`);
       if (!response.ok) throw new Error("Failed to fetch rides");
       return response.json();
@@ -51,29 +48,25 @@ export default function Home() {
     setSearchQuery(query);
   };
 
-  const handleFilterChange = (newFilters: typeof filters) => {
+  const handleFilterChange = (newFilters: RideFilters) => {
     setFilters(newFilters);
   };
 
-  const handleQuickFilter = (filterType: string, value: string) => {
+  const handleQuickFilter = async (filterType: string, value: string) => {
     if (filterType === "nearMe") {
       // Handle geolocation-based filtering
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            // For demo, just show all rides - in real app would filter by distance
-            setFilters({ ...filters, location: "" });
-          },
-          (error) => {
-            console.error("Geolocation error:", error);
-          }
-        );
+      if (isGeolocationSupported()) {
+        try {
+          await getCurrentLocation();
+          // For demo, just show all rides - in real app would filter by distance
+          setFilters({ ...filters, location: "" });
+        } catch (error) {
+          console.error("Geolocation error:", error);
+        }
       }
-    } else if (filterType === "today") {
-      const today = new Date().toISOString().split('T')[0];
-      setFilters({ ...filters, date: today });
-    } else if (filterType === "difficulty") {
-      setFilters({ ...filters, difficulty: value });
+    } else {
+      const newFilters = applyQuickFilter(filters, filterType, value);
+      setFilters(newFilters);
     }
   };
 

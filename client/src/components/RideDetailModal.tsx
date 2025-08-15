@@ -2,7 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { type Ride } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
+import { formatFullDateTime, formatTime } from "@/utils/dateHelpers";
+import { getDifficultyColor, getDifficultyLabel, formatRideDetails } from "@/utils/rideHelpers";
+import { shareRide } from "@/utils/shareHelpers";
 
 interface RideDetailModalProps {
   ride: Ride;
@@ -49,49 +51,22 @@ export default function RideDetailModal({ ride, onClose, onUpdate }: RideDetailM
     },
   });
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'easy': return 'bg-cycle-green';
-      case 'intermediate': return 'bg-cycle-orange';
-      case 'advanced': return 'bg-red-500';
-      default: return 'bg-gray-500';
-    }
-  };
-
-  const getDifficultyLabel = (difficulty: string) => {
-    return difficulty.toUpperCase();
-  };
-
-  const formatDate = (date: Date | string) => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    return format(dateObj, 'EEEE, MMMM do \'at\' h:mm a');
-  };
-
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':');
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
-  };
-
   const handleJoinRide = () => {
     joinRideMutation.mutate();
   };
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: ride.title,
-        text: `Join me for "${ride.title}" on ${formatDate(ride.date)}`,
-        url: window.location.href,
-      });
-    } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href);
+  const handleShare = async () => {
+    try {
+      await shareRide(ride);
       toast({
-        title: "Link copied!",
-        description: "Share this link with other cyclists.",
+        title: "Link shared!",
+        description: "Share this ride with other cyclists.",
+      });
+    } catch (error) {
+      toast({
+        title: "Sharing failed",
+        description: "Unable to share the ride link.",
+        variant: "destructive",
       });
     }
   };
@@ -145,7 +120,7 @@ export default function RideDetailModal({ ride, onClose, onUpdate }: RideDetailM
             
             <div className="flex items-center text-cycle-gray">
               <i className="fas fa-calendar-alt w-5 mr-3"></i>
-              <span data-testid="text-full-date">{formatDate(ride.date)} at {formatTime(ride.startTime)}</span>
+              <span data-testid="text-full-date">{formatFullDateTime(ride.date, ride.startTime)}</span>
             </div>
             
             <div className="flex items-center text-cycle-gray">
@@ -156,9 +131,7 @@ export default function RideDetailModal({ ride, onClose, onUpdate }: RideDetailM
             <div className="flex items-center text-cycle-gray">
               <i className="fas fa-route w-5 mr-3"></i>
               <span data-testid="text-ride-details">
-                {ride.distance ? `${ride.distance} miles` : 'Distance TBD'}
-                {ride.duration && ` • ${ride.duration} hours`}
-                {ride.difficulty && ` • ${ride.difficulty} pace`}
+                {formatRideDetails(ride.distance, ride.duration)} • {ride.difficulty} pace
               </span>
             </div>
             
