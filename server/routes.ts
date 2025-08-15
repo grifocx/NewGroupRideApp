@@ -121,7 +121,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
+      // Generate a simple auth token (in production, use JWT or similar)
+      const authToken = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
+      
+      // Store session in memory for this approach
       req.session.user = user;
+      req.session.authToken = authToken;
       
       // Explicitly save the session
       req.session.save((err) => {
@@ -129,17 +134,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error("Session save error:", err);
           return res.status(500).json({ message: "Session save failed" });
         }
-        console.log("=== LOGIN SUCCESS ===");
-        console.log("Session saved successfully for user:", user.username);
-        console.log("Session ID after login:", req.sessionID);
-        console.log("Session cookie will be set with name: cycle.sid");
-        console.log("Cookie settings:", cookieSettings);
-        console.log("Setting response headers for cookie...");
-        
-        // Set response headers to help debug cookie setting
-        res.setHeader('Set-Cookie-Debug', `cycle.sid=${req.sessionID}; Max-Age=86400; HttpOnly; ${cookieSettings.secure ? 'Secure; ' : ''}SameSite=${cookieSettings.sameSite}`);
+        console.log("=== LOGIN SUCCESS (Token-based) ===");
+        console.log("User authenticated:", user.username);
+        console.log("Auth token generated:", authToken);
         console.log("=== END LOGIN SUCCESS ===");
-        res.json(user);
+        
+        // Return both user data and auth token
+        res.json({ ...user, authToken });
       });
     } catch (error) {
       res.status(500).json({ message: "Login failed" });
@@ -151,24 +152,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (err) {
         return res.status(500).json({ message: "Logout failed" });
       }
+      console.log("=== LOGOUT SUCCESS ===");
+      console.log("Session destroyed successfully");
+      console.log("=== END LOGOUT ===");
       res.json({ message: "Logged out successfully" });
     });
   });
 
-  app.get("/api/auth/user", (req, res) => {
-    console.log("=== AUTH CHECK ===");
+  app.get("/api/auth/user", async (req, res) => {
+    console.log("=== AUTH CHECK (Token-based) ===");
     console.log("Session ID:", req.sessionID);
     console.log("Session user:", req.session.user ? req.session.user.username : "No user");
-    console.log("All session data:", req.session);
-    console.log("Request origin:", req.headers.origin);
-    console.log("Request referer:", req.headers.referer);
+    console.log("Authorization header:", req.headers.authorization);
+    console.log("Request cookies:", req.headers.cookie);
     console.log("=== END AUTH CHECK ===");
     
+    // Check session first (for backwards compatibility)
     if (req.session.user) {
-      res.json(req.session.user);
-    } else {
-      res.status(401).json({ message: "Not authenticated" });
+      return res.json(req.session.user);
     }
+    
+    // Check for auth token in Authorization header
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      
+      try {
+        // Decode token and verify user
+        const decoded = Buffer.from(token, 'base64').toString();
+        const [userId] = decoded.split(':');
+        
+        const user = await storage.getUser(userId);
+        if (user) {
+          console.log("=== TOKEN AUTH SUCCESS ===");
+          console.log("User authenticated via token:", user.username);
+          console.log("=== END TOKEN AUTH ===");
+          return res.json(user);
+        }
+      } catch (error) {
+        console.log("Token decode error:", error);
+      }
+    }
+    
+    res.status(401).json({ message: "Not authenticated" });
   });
 
   // User routes
