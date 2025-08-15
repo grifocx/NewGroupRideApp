@@ -1,0 +1,207 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import AuthModal from "@/components/AuthModal";
+
+export default function Landing() {
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
+
+  const handleSignIn = () => {
+    setAuthMode("login");
+    setShowAuthModal(true);
+  };
+
+  const handleSignUp = () => {
+    setAuthMode("register");
+    setShowAuthModal(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-cycle-light via-white to-cycle-green/10">
+      {/* Header */}
+      <nav className="px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-cycle-green rounded-full flex items-center justify-center">
+            <i className="fas fa-bicycle text-white text-sm"></i>
+          </div>
+          <span className="font-bold text-xl text-cycle-dark">CycleConnect</span>
+        </div>
+        <div className="space-x-3">
+          <Button 
+            variant="outline" 
+            onClick={handleSignIn}
+            data-testid="button-sign-in"
+          >
+            Sign In
+          </Button>
+          <Button 
+            onClick={handleSignUp}
+            className="bg-cycle-green hover:bg-cycle-green/90"
+            data-testid="button-sign-up"
+          >
+            Sign Up
+          </Button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <main className="px-6 py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-5xl font-bold text-cycle-dark leading-tight">
+                  Connect with cyclists.
+                  <br />
+                  <span className="text-cycle-green">Discover group rides.</span>
+                </h1>
+                <p className="text-xl text-cycle-gray max-w-lg">
+                  Join a community of passionate cyclists. Find rides that match your pace, 
+                  create memorable adventures, and explore your city on two wheels.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="lg"
+                  onClick={handleSignUp}
+                  className="bg-cycle-green hover:bg-cycle-green/90 text-lg px-8 py-3"
+                  data-testid="button-get-started"
+                >
+                  Get Started Free
+                  <i className="fas fa-arrow-right ml-2"></i>
+                </Button>
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  onClick={handleSignIn}
+                  className="text-lg px-8 py-3"
+                  data-testid="button-explore-rides"
+                >
+                  Explore Rides
+                </Button>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-cycle-green">15+</div>
+                  <div className="text-sm text-cycle-gray">Active Rides</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-cycle-green">8+</div>
+                  <div className="text-sm text-cycle-gray">Cities Covered</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-cycle-green">100%</div>
+                  <div className="text-sm text-cycle-gray">Free to Join</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Visual */}
+            <div className="relative">
+              <div className="aspect-square bg-gradient-to-br from-cycle-green to-cycle-blue rounded-2xl p-8 text-white relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/10"></div>
+                <div className="relative z-10 h-full flex flex-col justify-center items-center text-center space-y-6">
+                  <i className="fas fa-bicycle text-6xl opacity-80"></i>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold">Join Your First Ride</h3>
+                    <p className="text-sm opacity-90">
+                      From coffee shop tours to mountain adventures - 
+                      find rides that match your style and skill level.
+                    </p>
+                  </div>
+                </div>
+                {/* Decorative elements */}
+                <div className="absolute top-4 right-4 w-16 h-16 bg-white/10 rounded-full"></div>
+                <div className="absolute bottom-8 left-4 w-8 h-8 bg-white/10 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Features Section */}
+      <section className="px-6 py-16 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-cycle-dark mb-4">
+              Everything you need for group cycling
+            </h2>
+            <p className="text-cycle-gray max-w-2xl mx-auto">
+              Our platform makes it easy to discover rides, connect with cyclists, 
+              and build lasting friendships in the cycling community.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-cycle-green/10 rounded-full flex items-center justify-center mx-auto">
+                <i className="fas fa-map-marked-alt text-cycle-green text-2xl"></i>
+              </div>
+              <h3 className="text-xl font-semibold text-cycle-dark">Interactive Maps</h3>
+              <p className="text-cycle-gray">
+                Explore rides on our interactive map. See exact starting locations, 
+                difficulty levels, and route details at a glance.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-cycle-green/10 rounded-full flex items-center justify-center mx-auto">
+                <i className="fas fa-users text-cycle-green text-2xl"></i>
+              </div>
+              <h3 className="text-xl font-semibold text-cycle-dark">Find Your Community</h3>
+              <p className="text-cycle-gray">
+                Connect with cyclists who share your passion. From beginners to experts, 
+                there's a group for every rider.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-cycle-green/10 rounded-full flex items-center justify-center mx-auto">
+                <i className="fas fa-plus-circle text-cycle-green text-2xl"></i>
+              </div>
+              <h3 className="text-xl font-semibold text-cycle-dark">Create & Organize</h3>
+              <p className="text-cycle-gray">
+                Organize your own rides and become a community leader. 
+                Set the pace, choose the route, and build your cycling network.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="px-6 py-16 bg-cycle-green text-white">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <h2 className="text-3xl font-bold">
+            Ready to start your cycling adventure?
+          </h2>
+          <p className="text-xl opacity-90">
+            Join thousands of cyclists who've found their perfect riding community.
+          </p>
+          <Button 
+            size="lg"
+            onClick={handleSignUp}
+            className="bg-white text-cycle-green hover:bg-gray-100 text-lg px-8 py-3"
+            data-testid="button-join-now"
+          >
+            Join CycleConnect Today
+            <i className="fas fa-arrow-right ml-2"></i>
+          </Button>
+        </div>
+      </section>
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <AuthModal
+          mode={authMode}
+          onClose={() => setShowAuthModal(false)}
+          onModeChange={setAuthMode}
+        />
+      )}
+    </div>
+  );
+}
