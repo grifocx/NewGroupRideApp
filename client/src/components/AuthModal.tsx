@@ -56,30 +56,51 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => {
-      console.log("=== CLIENT: Starting login mutation ===");
-      console.log("Login data:", data);
-      const response = await apiRequest("/api/auth/login", "POST", data);
-      console.log("=== CLIENT: Login API response received ===");
-      
-      // Parse response immediately in mutationFn
-      const responseData = await response.json();
-      console.log("=== CLIENT: Parsed response data ===");
-      console.log("Response data:", responseData);
-      
-      return responseData; // Return parsed data, not Response object
+      try {
+        console.log("=== CLIENT: Starting login mutation ===");
+        console.log("Login data:", data);
+        
+        const response = await apiRequest("/api/auth/login", "POST", data);
+        console.log("=== CLIENT: Login API response received ===");
+        console.log("Response status:", response.status);
+        console.log("Response ok:", response.ok);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.log("=== CLIENT: Login API error response ===");
+          console.log("Error text:", errorText);
+          throw new Error(`Login failed: ${response.status} ${errorText}`);
+        }
+        
+        // Parse response immediately in mutationFn
+        const responseData = await response.json();
+        console.log("=== CLIENT: Parsed response data ===");
+        console.log("Response data:", responseData);
+        console.log("Has authToken:", !!responseData.authToken);
+        
+        return responseData; // Return parsed data, not Response object
+      } catch (error) {
+        console.log("=== CLIENT: Mutation function error ===");
+        console.log("Error:", error);
+        throw error;
+      }
     },
     onSuccess: (responseData) => {
-      console.log("=== CLIENT: Login successful (Token-based) ===");
+      console.log("=== CLIENT: Login onSuccess triggered ===");
       console.log("Response data received in onSuccess:", responseData);
       
       // Store auth token in localStorage
-      if (responseData.authToken) {
+      if (responseData && responseData.authToken) {
         localStorage.setItem('authToken', responseData.authToken);
         console.log("=== CLIENT: Auth token stored in localStorage ===");
         console.log("Token value:", responseData.authToken);
       } else {
         console.log("=== CLIENT: WARNING - No authToken in response ===");
-        console.log("Available keys:", Object.keys(responseData));
+        console.log("Response data type:", typeof responseData);
+        console.log("Response data:", responseData);
+        if (responseData && typeof responseData === 'object') {
+          console.log("Available keys:", Object.keys(responseData));
+        }
       }
       
       toast({
@@ -94,8 +115,10 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
       onClose();
     },
     onError: (error: Error) => {
-      console.log("=== CLIENT: Login error ===");
+      console.log("=== CLIENT: Login onError triggered ===");
       console.log("Error:", error);
+      console.log("Error message:", error.message);
+      console.log("Error stack:", error.stack);
       toast({
         title: "Login failed",
         description: error.message,
