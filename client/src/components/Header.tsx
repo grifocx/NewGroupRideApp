@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Bike } from "lucide-react";
+import { FaBicycle } from "react-icons/fa";
 import { useAuth } from "@/hooks/useAuth";
 import ProfileModal from "@/components/ProfileModal";
 
@@ -18,7 +18,7 @@ export default function Header({ onCreateRide }: HeaderProps) {
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
-                <Bike className="text-white w-5 h-5" />
+                <FaBicycle className="text-white text-lg" />
               </div>
               <h1 className="text-xl font-bold text-charcoal">GroupRideApp</h1>
             </Link>
