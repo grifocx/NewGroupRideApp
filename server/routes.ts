@@ -33,7 +33,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     cookie: {
       secure: false, // Set to true in production with HTTPS
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: 'lax' // Allow same-site requests
     }
   }));
 
@@ -58,7 +59,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const user = await storage.createUser(validatedData);
       req.session.user = user;
-      res.status(201).json(user);
+      
+      // Explicitly save the session
+      req.session.save((err) => {
+        if (err) {
+          console.error("Session save error:", err);
+          return res.status(500).json({ message: "Session save failed" });
+        }
+        console.log("Session saved successfully for user:", user.username);
+        res.status(201).json(user);
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid user data", errors: error.errors });
@@ -81,7 +91,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       req.session.user = user;
-      res.json(user);
+      
+      // Explicitly save the session
+      req.session.save((err) => {
+        if (err) {
+          console.error("Session save error:", err);
+          return res.status(500).json({ message: "Session save failed" });
+        }
+        console.log("Session saved successfully for user:", user.username);
+        res.json(user);
+      });
     } catch (error) {
       res.status(500).json({ message: "Login failed" });
     }
@@ -97,6 +116,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/auth/user", (req, res) => {
+    console.log("Auth check - Session ID:", req.sessionID);
+    console.log("Auth check - Session user:", req.session.user ? req.session.user.username : "No user");
+    
     if (req.session.user) {
       res.json(req.session.user);
     } else {
