@@ -149,7 +149,12 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
   });
 
   const handleLogin = (data: LoginData) => {
+    console.log("=== CLIENT: handleLogin called ===");
+    console.log("Form data:", data);
+    console.log("LoginMutation object:", loginMutation);
+    console.log("About to call loginMutation.mutate...");
     loginMutation.mutate(data);
+    console.log("=== CLIENT: loginMutation.mutate called ===");
   };
 
   const handleRegister = (data: RegisterData) => {
@@ -174,7 +179,14 @@ export default function AuthModal({ mode, onClose, onModeChange }: AuthModalProp
           </div>
 
           {mode === "login" ? (
-            <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
+            <form onSubmit={(e) => {
+              console.log("=== CLIENT: Form submit event triggered ===");
+              console.log("Event:", e);
+              const result = loginForm.handleSubmit(handleLogin)(e);
+              console.log("=== CLIENT: handleSubmit result ===");
+              console.log("Result:", result);
+              return result;
+            }} className="space-y-4">
               <div>
                 <Label htmlFor="email">Email</Label>
                 <Input
